@@ -1,0 +1,132 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="stompy">
+    <static>false</static>
+      <link name='body'>
+        <pose>0 0 1.495 0 0 0</pose>
+
+        <inertial>
+          <mass>1823.41</mass>
+          <inertia>
+            <ixx>499.7</ixx>
+            <ixy>0.019</ixy>
+            <ixz>-172.0</ixz>
+            <iyy>3253.0</iyy>
+            <iyz>0.019</iyz>
+            <izz>3049.0</izz>
+          </inertia>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>4.47037 1.3716 1.</size>
+            </box>
+          </geometry>
+          <surface>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+            </bounce>
+            <friction>
+              <ode>
+                <mu>1000000</mu>
+                <mu2>1000000</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+
+        <visual name='visual'>
+          <pose>0 0 -0.495 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>model://stompy/meshes/body.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+      </link>
+
+      <!-- front left leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>2.35117 0.5842 1 0 0 0.7853</pose>
+        <name>fl_leg</name>
+      </include>
+      <joint name="fl_leg_to_body" type="revolute">
+        <child>fl_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+
+      <!-- front right leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>2.35117 -0.5842 1 0 0 -0.7853</pose>
+        <name>fr_leg</name>
+      </include>
+      <joint name="fr_leg_to_body" type="revolute">
+        <child>fr_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+
+      <!-- middle left leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>.11597 0.6858 1 0 0 1.5706</pose>
+        <name>ml_leg</name>
+      </include>
+      <joint name="ml_leg_to_body" type="revolute">
+        <child>ml_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+
+      <!-- middle right leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>.11597 -0.6858 1 0 0 -1.5706</pose>
+        <name>mr_leg</name>
+      </include>
+      <joint name="mr_leg_to_body" type="revolute">
+        <child>mr_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+
+      <!-- rear left leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>-2.1192 0.5842 1 0 0 2.3561</pose>
+        <name>rl_leg</name>
+      </include>
+      <joint name="rl_leg_to_body" type="revolute">
+        <child>rl_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+
+      <!-- rear right leg -->
+      <include>
+        <uri>model://stompy_leg</uri>
+        <pose>-2.1192 -0.5842 1 0 0 -2.3561</pose>
+        <name>rr_leg</name>
+      </include>
+      <joint name="rr_leg_to_body" type="revolute">
+        <child>rr_leg::hip</child>
+        <parent>body</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+        </axis>
+      </joint>
+  </model>
+</sdf>

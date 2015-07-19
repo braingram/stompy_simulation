@@ -1,0 +1,359 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+  <model name="stompy_leg">
+    <link name='hip'>
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.113861 0.000000 0.033178</pose>
+        <mass>28.231</mass>
+        <inertia>
+          <ixx>0.417</ixx>
+          <ixy>0.</ixy>
+          <ixz>0.026</ixz>
+          <iyy>0.327</iyy>
+          <iyz>0.</iyz>
+          <izz>0.337</izz>
+        </inertia>
+      </inertial>
+      <collision name='collision'>
+        <pose>0.110605 -0.000000 0.042183 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.388937 0.411136 0.304614</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='visual'>
+        <geometry>
+          <mesh>
+            <uri>model://stompy_leg/meshes/hip.stl</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <link name="thigh">
+      <pose>0.279 0 0 0 0 0</pose>
+      <inertial>
+          <pose>-0.041166 -0.000000 0.526663 0 0 0</pose>
+          <mass>64.053</mass>
+          <inertia>
+              <ixx>10.62</ixx> 
+              <ixy>0.</ixy>
+              <ixz>-0.34</ixz>
+              <iyy>10.92</iyy>
+              <iyz>0.</iyz>
+              <izz>1.334</izz>
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>-0.047642 -0.000000 0.708695 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.525414 0.273050 1.446567</size>
+            </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/thigh.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="hip_to_thigh" type="revolute">
+        <child>thigh</child>
+        <parent>hip</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>0.</lower>
+                <upper>0.6981</upper>
+            </limit>
+        </axis>
+    </joint>
+
+    <link name="calf_upper">
+      <pose>0.423 0 1.364 0 0 0</pose>
+      <inertial>
+          <pose>0.035283 -0.000004 -0.339513 0 0 0</pose>
+          <mass>39.145</mass>
+          <inertia>
+              <ixx>5.471</ixx>
+              <ixy>0.</ixy>
+              <ixz>1.148</ixz>
+              <iyy>5.636</iyy>
+              <iyz>0.</iyz>
+              <izz>0.775</izz>
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>0.032845 -0.000014 -0.332317 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.397840 0.346075 1.385496</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/calf_upper.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="thigh_to_calf_upper" type="revolute">
+        <child>calf_upper</child>
+        <parent>thigh</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>-0.6981</lower>
+                <upper>0</upper>
+            </limit>
+
+        </axis>
+    </joint>
+
+    <link name="linkage_upper">
+      <pose>0.4246 0 0.5455 0 0 0</pose>
+      <inertial>
+          <pose>0.102916 0.000000 0.000012 0 0 0</pose>
+          <mass>3.754</mass>
+          <inertia>
+              <ixx>0.028</ixx>
+              <ixy>0.</ixy>
+              <ixz>0.</ixz>
+              <iyy>0.022</iyy>
+              <iyz>0</iyz>
+              <izz>0.009</izz> 
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>0.101388 0.000000 -0.000017 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.273050 0.146050 0.082518</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/calf_link.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="calf_upper_to_linkage_upper" type="revolute">
+        <child>linkage_upper</child>
+        <parent>calf_upper</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+
+    <link name="linkage_lower">
+      <pose>0.4618 0 0.243 0 0 0</pose>
+      <inertial>
+          <pose>0.102916 0.000000 0.000012 0 0 0</pose>
+          <mass>3.754</mass>
+          <inertia>
+              <ixx>0.028</ixx>
+              <ixy>0.</ixy>
+              <ixz>0.</ixz>
+              <iyy>0.022</iyy>
+              <iyz>0</iyz>
+              <izz>0.009</izz> 
+          </inertia>
+      </inertial>
+        <collision name="collision">
+          <pose>0.101388 0.000000 -0.000017 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.273050 0.146050 0.082518</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/calf_link.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="calf_upper_to_linkage_lower" type="revolute">
+        <child>linkage_lower</child>
+        <parent>calf_upper</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+
+    <link name="calf_lower">
+      <pose>0.6276 0 0.5455 0 0 0</pose>
+      <inertial>
+          <pose>0.048243 0.000000 -0.405047 0 0 0</pose>
+          <mass>18.983</mass>
+          <inertia>
+              <ixx>1.827</ixx>
+              <ixy>0.</ixy>
+              <ixz>0.243</ixz>
+              <iyy>1.859</iyy>
+              <iyz>0.</iyz>
+              <izz>0.145</izz> 
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>0.052774 0.000000 -0.409032 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.237352 0.180975 1.122347</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/calf_lower.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="linkage_upper_to_calf_lower" type="revolute">
+        <child>calf_lower</child>
+        <parent>linkage_upper</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>0</lower>
+                <upper>0.3490</upper>
+            </limit>
+        </axis>
+        <!--
+        <physics>
+            <ode>
+                <cfm>0.0</cfm>
+                <bounce>0.0</bounce>
+                <max_force>1000</max_force>
+                <velocity>0</velocity>
+                <fudge_factor>0</fudge_factor>
+                <limit>
+                    <cfm>6.0</cfm>
+                    <erp>1.0</erp>
+                </limit>
+            </ode>
+        </physics>
+        -->
+    </joint>
+    <joint name="linkage_lower_to_calf_lower" type="revolute">
+        <child>calf_lower</child>
+        <pose>0.0371 0 -0.3024 0 0 0</pose>
+        <parent>linkage_lower</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+        </axis>
+    </joint>
+    <!--
+    <joint name="calf_spring" type="prismatic">
+        <child>calf_lower</child>
+        <pose>-0.0108 0 0.1011 0 0 0</pose>
+        <parent>calf_upper</parent>
+        <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+                <lower>0.257302</lower>
+                <upper>0.361442</upper>
+            </limit>
+        </axis>
+    </joint>
+    -->
+
+    <link name="ankle">
+      <pose>0.6476 0 -0.4225 0 0 0</pose>
+      <inertial>
+          <pose>-0.000000 0.000000 -0.016387 0 0 0</pose>
+          <mass>1.391</mass>
+          <inertia>
+              <ixx>0.002</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.001</iyy>
+              <iyz>0</iyz>
+              <izz>0.002</izz> 
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>-0.000000 -0.000000 -0.017091 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.073025 0.127000 0.100314</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/ankle.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="calf_lower_to_ankle" type="revolute">
+        <child>ankle</child>
+        <parent>calf_lower</parent>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>-1.3962</lower>
+                <upper>1.3962</upper>
+            </limit>
+        </axis>
+    </joint>
+
+    <link name="foot">
+      <pose>0.6476 0 -0.4637 0 0 0</pose>
+      <inertial>
+          <pose>-0.000000 0.000000 -0.111878 0 0 0</pose>
+          <mass>9.307</mass>
+          <inertia>
+              <ixx>0.069</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.069</iyy>
+              <iyz>0</iyz>
+              <izz>0.102</izz> 
+          </inertia>
+      </inertial>
+      <collision name="collision">
+          <pose>-0.000000 0.000000 -0.111878 0 0 0</pose>
+          <geometry>
+              <box>
+                  <size>0.355474 0.355348 0.188913</size>
+              </box>
+          </geometry>
+      </collision>
+      <visual name="visual">
+          <geometry>
+            <mesh>
+              <uri>model://stompy_leg/meshes/foot.stl</uri>
+            </mesh>
+          </geometry>
+      </visual>
+    </link>
+    <joint name="ankle_to_foot" type="revolute">
+        <child>foot</child>
+        <parent>ankle</parent>
+        <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+                <lower>-1.3962</lower>
+                <upper>1.3962</upper>
+            </limit>
+        </axis>
+    </joint>
+  </model>
+</sdf>
