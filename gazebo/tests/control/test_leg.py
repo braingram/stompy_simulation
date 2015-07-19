@@ -16,13 +16,16 @@ def publish_loop():
     print("have publisher")
 
     message = pygazebo.msg.joint_cmd_pb2.JointCmd()
-    message.name = 'stompy::fl_leg::thigh_to_calf_upper'
-    message.axis = 1
-    message.force = -1000.0
+    #message.name = 'stompy::fl_leg::thigh_to_calf_upper'
+    #message.axis = 1
+    #message.force = -1000.0
 
-    #message.name = 'stompy::fl_leg_to_hip'
-    #message.axis = 2
-    #message.force = 100.0
+    message.name = 'stompy::body_to_fl_leg'
+    message.axis = 2
+    message.force = 1000
+    #message.position.p_gain = 10.0
+    #message.position.i_gain = 0.5
+    #message.position.target = 1.5707
 
     #message.name = 'stompy::fl_leg::hip_to_thigh'
     #message.axis = 1

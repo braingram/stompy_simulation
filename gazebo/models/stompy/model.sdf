@@ -51,7 +51,7 @@
         <pose>2.35117 0.5842 1 0 0 0.7853</pose>
         <name>fl_leg</name>
       </include>
-      <joint name="fl_leg_to_body" type="revolute">
+      <joint name="body_to_fl_leg" type="revolute">
         <child>fl_leg::hip</child>
         <parent>body</parent>
         <axis>
@@ -65,7 +65,7 @@
         <pose>2.35117 -0.5842 1 0 0 -0.7853</pose>
         <name>fr_leg</name>
       </include>
-      <joint name="fr_leg_to_body" type="revolute">
+      <joint name="body_to_fr_leg" type="revolute">
         <child>fr_leg::hip</child>
         <parent>body</parent>
         <axis>
@@ -79,7 +79,7 @@
         <pose>.11597 0.6858 1 0 0 1.5706</pose>
         <name>ml_leg</name>
       </include>
-      <joint name="ml_leg_to_body" type="revolute">
+      <joint name="body_to_ml_leg" type="revolute">
         <child>ml_leg::hip</child>
         <parent>body</parent>
         <axis>
@@ -93,7 +93,7 @@
         <pose>.11597 -0.6858 1 0 0 -1.5706</pose>
         <name>mr_leg</name>
       </include>
-      <joint name="mr_leg_to_body" type="revolute">
+      <joint name="body_to_mr_leg" type="revolute">
         <child>mr_leg::hip</child>
         <parent>body</parent>
         <axis>
@@ -107,7 +107,7 @@
         <pose>-2.1192 0.5842 1 0 0 2.3561</pose>
         <name>rl_leg</name>
       </include>
-      <joint name="rl_leg_to_body" type="revolute">
+      <joint name="body_to_rl_leg" type="revolute">
         <child>rl_leg::hip</child>
         <parent>body</parent>
         <axis>
@@ -121,7 +121,7 @@
         <pose>-2.1192 -0.5842 1 0 0 -2.3561</pose>
         <name>rr_leg</name>
       </include>
-      <joint name="rr_leg_to_body" type="revolute">
+      <joint name="body_to_rr_leg" type="revolute">
         <child>rr_leg::hip</child>
         <parent>body</parent>
         <axis>

@@ -51,7 +51,7 @@
         <pose>2.35117 0.5842 1.2 0 0 0.7853</pose>
         <name>fl_leg</name>
       </include>
-      <joint name="fl_leg_to_body" type="revolute">
+      <joint name="body_to_fl_leg" type="revolute">
         <child>fl_leg::hip</child>
         <parent>body</parent>
         <axis>
