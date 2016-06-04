@@ -1,8 +1,19 @@
 <launch>
+  <!-- load default world -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find stompy_gazebo)/worlds/stompy.world"/>
         <!-- more default parameters can be changed here -->
    </include>
    <param name="robot_description" command="$(find xacro)/xacro.py $(find stompy_description)/urdf/stompyleg.urdf.xacro" />
    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -z 5 -model stompyleg" />
+
+   <!--
+   <param name="use_gui" value="true" />
+   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+     <param name="publish_frequency" type="double" value="10.0"/>
+    </node>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+     <param name="publish_frequency" type="double" value="10.0"/>
+    </node>
+    -->
 </launch>

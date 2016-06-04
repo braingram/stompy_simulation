@@ -1,0 +1,31 @@
+<launch>
+    <include file="$(find stompy_gazebo)/launch/stompyleg.launch" />
+
+  <!-- load controls configuration -->
+    <rosparam file="$(find stompy_gazebo)/config/stompyleg_control.yaml" command="load"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/stompyleg"
+        args="
+        hip_controller
+        thigh_controller
+        knee_controller
+        "
+    />
+    <!--
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen">
+        <remap from="/joint_states" to="/stompyleg/joint_states"/>
+    </node>
+    -->
+
+    <!--
+    <param name="use_gui" value="true" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    -->
+    <!--
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find stompy_gazebo)/rviz/stompyleg.rviz" />
+    -->
+    <!--
+    <node name="rviz" pkg="rviz" type="rviz" />
+    -->
+</launch>
