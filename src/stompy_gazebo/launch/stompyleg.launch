@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find stompy_gazebo)/worlds/stompy.world"/>
+        <!-- more default parameters can be changed here -->
+   </include>
+   <param name="robot_description" command="$(find xacro)/xacro.py $(find stompy_description)/urdf/stompyleg.urdf.xacro" />
+   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -z 5 -model stompyleg" />
+</launch>

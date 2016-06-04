@@ -1,0 +1,264 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="stompy">
+<!--
+     build 6 legs and a body
+ -->
+ <xacro:property name="max_e" value="1000"/>
+ <xacro:property name="max_v" value="10"/>
+
+ <xacro:macro name="leg" params="name rpy xyz">
+  <joint name="stompy__${name}__hip_to_thigh" type="revolute">
+    <parent link="stompy__${name}__hip"/>
+    <child link="stompy__${name}__thigh"/>
+    <origin rpy="0  0  0" xyz="0.279  0     0"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="0.0" upper="0.6981" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__thigh_to_calf_upper" type="revolute">
+    <parent link="stompy__${name}__thigh"/>
+    <child link="stompy__${name}__calf_upper"/>
+    <origin rpy="0  0  0" xyz="0.14399  0       1.364"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__calf_upper_to_linkage_upper" type="fixed">
+    <parent link="stompy__${name}__calf_upper"/>
+    <child link="stompy__${name}__linkage_upper"/>
+    <origin rpy="0  0  0" xyz="0.0016  0     -0.8185"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__calf_upper_to_linkage_lower" type="fixed">
+    <parent link="stompy__${name}__calf_upper"/>
+    <child link="stompy__${name}__linkage_lower"/>
+    <origin rpy="0  0  0" xyz="0.0388  0     -1.121"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__calf_upper_to_calf_lower" type="prismatic">
+    <parent link="stompy__${name}__calf_upper"/>
+    <child link="stompy__${name}__calf_lower"/>
+    <!-- somewhat guesses... -->
+    <origin rpy="0  0  0" xyz="0.2418  0   -1.121"/>
+    <axis xyz="0  0  1"/>
+    <limit effort="${max_e}" lower="-0.0527" upper="0.0527" velocity="${max_v}"/>
+  </joint>
+  <!--
+  <joint name="stompy__${name}__linkage_upper_to_calf_lower" type="revolute">
+    <parent link="stompy__${name}__linkage_upper"/>
+    <child link="stompy__${name}__calf_lower"/>
+    <origin rpy="0  0  0" xyz="0.203  0     0"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="0.0" upper="0.349" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__linkage_lower_to_calf_lower" type="fixed">
+    <parent link="stompy__${name}__linkage_lower"/>
+    <child link="stompy__${name}__calf_lower"/>
+    <origin rpy="0  0  0" xyz="2.02900000e-01   0.00000000e+00   1.00000000e-04"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
+  </joint>
+  -->
+  <joint name="stompy__${name}__calf_lower_to_ankle" type="revolute">
+    <parent link="stompy__${name}__calf_lower"/>
+    <child link="stompy__${name}__ankle"/>
+    <origin rpy="0  0  0" xyz="-0.0171  0     -0.6656"/>
+    <axis xyz="0  1  0"/>
+    <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
+  </joint>
+  <joint name="stompy__${name}__ankle_to_foot" type="revolute">
+    <parent link="stompy__${name}__ankle"/>
+    <child link="stompy__${name}__foot"/>
+    <origin rpy="0  0  0" xyz="0      0     -0.0412"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
+  </joint>
+  <link name="stompy__${name}__hip">
+    <inertial>
+      <mass value="28.231"/>
+      <origin rpy="0  0  0" xyz="0.11386  0       0.03317"/>
+      <inertia ixx="0.417" ixy="0." ixz="0.026" iyy="0.327" iyz="0." izz="0.337"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="0.1106   0       0.04218"/>
+      <geometry>
+        <box size="0.388937 0.411136 0.304614"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/hip.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__thigh">
+    <inertial>
+      <mass value="64.053"/>
+      <origin rpy="0  0  0" xyz="-0.04116  0       0.52666"/>
+      <inertia ixx="10.62" ixy="0." ixz="-0.34" iyy="10.92" iyz="0." izz="1.334"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="-0.04764  0       0.70869"/>
+      <geometry>
+        <box size="0.525414 0.273050 1.446567"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/thigh.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__calf_upper">
+    <inertial>
+      <mass value="39.145"/>
+      <origin rpy="0  0  0" xyz="0.03528  0      -0.33951"/>
+      <inertia ixx="5.471" ixy="0." ixz="1.148" iyy="5.636" iyz="0." izz="0.775"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="3.28400000e-02  -1.00000000e-05  -3.32310000e-01"/>
+      <geometry>
+        <box size="0.397840 0.346075 1.385496"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/calf_upper.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__linkage_upper">
+    <inertial>
+      <mass value="3.754"/>
+      <origin rpy="0  0  0" xyz="1.02910000e-01   0.00000000e+00   1.00000000e-05"/>
+      <inertia ixx="0.028" ixy="0." ixz="0." iyy="0.022" iyz="0" izz="0.009"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="1.01380000e-01   0.00000000e+00  -1.00000000e-05"/>
+      <geometry>
+        <box size="0.273050 0.146050 0.082518"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/calf_link.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__linkage_lower">
+    <inertial>
+      <mass value="3.754"/>
+      <origin rpy="0  0  0" xyz="1.02910000e-01   0.00000000e+00   1.00000000e-05"/>
+      <inertia ixx="0.028" ixy="0." ixz="0." iyy="0.022" iyz="0" izz="0.009"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="1.01380000e-01   0.00000000e+00  -1.00000000e-05"/>
+      <geometry>
+        <box size="0.273050 0.146050 0.082518"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/calf_link.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__calf_lower">
+    <inertial>
+      <mass value="18.983"/>
+      <origin rpy="0  0  0" xyz="0.01114  0      -0.10264"/>
+      <inertia ixx="1.827" ixy="0." ixz="0.243" iyy="1.859" iyz="0." izz="0.145"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="0.01567  0      -0.10663"/>
+      <geometry>
+        <box size="0.237352 0.180975 1.122347"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="-0.0371  0      0.3024"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/calf_lower.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__ankle">
+    <inertial>
+      <mass value="1.391"/>
+      <origin rpy="0  0  0" xyz="0       0      -0.01638"/>
+      <inertia ixx="0.002" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.002"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="0       0      -0.01709"/>
+      <geometry>
+        <box size="0.073025 0.127000 0.100314"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/ankle.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="stompy__${name}__foot">
+    <inertial>
+      <mass value="9.307"/>
+      <origin rpy="0  0  0" xyz="0       0      -0.11187"/>
+      <inertia ixx="0.069" ixy="0" ixz="0" iyy="0.069" iyz="0" izz="0.102"/>
+    </inertial>
+    <collision name="stompy__${name}__collision">
+      <origin rpy="0  0  0" xyz="0       0      -0.11187"/>
+      <geometry>
+        <box size="0.355474 0.355348 0.188913"/>
+      </geometry>
+    </collision>
+    <visual name="stompy__${name}__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+          <mesh filename="package://stompy_description/meshes/foot.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="stompy__body_to_${name}" type="revolute">
+    <parent link="stompy__body"/>
+    <child link="stompy__${name}__hip"/>
+    <origin rpy="${rpy}" xyz="${xyz}"/>
+    <axis xyz="0  0  1"/>
+    <limit effort="${max_e}" lower="-1.57079" upper="1.57079" velocity="${max_v}"/>
+  </joint>
+ </xacro:macro>
+
+
+ <link name="stompy__body">
+    <inertial>
+      <mass value="1823.41"/>
+      <origin rpy="0  0  0" xyz="0     0     1.495"/>
+      <inertia ixx="499.7" ixy="0.019" ixz="-172.0" iyy="3253.0" iyz="0.019" izz="3049.0"/>
+    </inertial>
+    <collision name="stompy__collision">
+      <origin rpy="0  0  0" xyz="0     0     1.495"/>
+      <geometry>
+        <box size="4.47037 1.3716 1."/>
+      </geometry>
+    </collision>
+    <visual name="stompy__visual">
+      <origin rpy="0  0  0" xyz="0  0  1"/>
+      <geometry>
+        <mesh filename="package://stompy_description/meshes/body.stl" scale="1.0 1.0 1.0"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <xacro:leg name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1"/>
+  <xacro:leg name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   1"/>
+  <xacro:leg name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   1"/>
+  <xacro:leg name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   1"/>
+  <xacro:leg name="rl" rpy="0      0      2.3561" xyz="-2.1192  0.5842  1"/>
+  <xacro:leg name="rr" rpy="0      0     -2.3561" xyz="-2.1192 -0.5842  1"/>
+</robot>
