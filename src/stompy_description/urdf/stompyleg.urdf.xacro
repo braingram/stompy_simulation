@@ -288,7 +288,7 @@
       </geometry>
     </collision>
     <visual name="stompyleg__visual">
-      <origin rpy="0  0  0" xyz="0  0  1"/>
+      <origin rpy="0  0  0" xyz="0  0  0.7"/>
       <geometry>
         <box size="4.47037 1.3716 1."/>
         <!--
