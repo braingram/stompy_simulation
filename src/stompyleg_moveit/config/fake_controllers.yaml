@@ -1,0 +1,6 @@
+controller_list:
+  - name: fake_footy_mcfootface_controller
+    joints:
+      - stompyleg__body_to_fl
+      - stompyleg__fl__hip_to_thigh
+      - stompyleg__fl__thigh_to_calf_upper

@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="stompyleg">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="footy_mcfootface">
+        <link name="stompyleg__body" />
+        <link name="stompyleg__fl__hip" />
+        <link name="stompyleg__fl__thigh" />
+        <link name="stompyleg__fl__calf_upper" />
+        <joint name="stompyleg__body_to_fl" />
+        <joint name="stompyleg__fl__hip_to_thigh" />
+        <joint name="stompyleg__fl__thigh_to_calf_upper" />
+        <chain base_link="stompyleg__body" tip_link="stompyleg__fl__calf_upper" />
+    </group>
+    <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
+    <passive_joint name="stompyleg__fl__calf_upper_to_calf_lower" />
+    <passive_joint name="stompyleg__fl__calf_lower_to_ankle" />
+    <passive_joint name="stompyleg__fl__ankle_to_foot" />
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__ankle" reason="Never" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__calf_lower" reason="Never" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__calf_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__hip" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__linkage_lower" reason="Never" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__linkage_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__body" link2="stompyleg__fl__thigh" reason="Default" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__calf_lower" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__calf_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__foot" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__hip" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__linkage_lower" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__linkage_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__ankle" link2="stompyleg__fl__thigh" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__calf_lower" link2="stompyleg__fl__calf_upper" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__calf_lower" link2="stompyleg__fl__hip" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__calf_lower" link2="stompyleg__fl__linkage_lower" reason="Default" />
+    <disable_collisions link1="stompyleg__fl__calf_lower" link2="stompyleg__fl__linkage_upper" reason="Default" />
+    <disable_collisions link1="stompyleg__fl__calf_lower" link2="stompyleg__fl__thigh" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__calf_upper" link2="stompyleg__fl__foot" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__calf_upper" link2="stompyleg__fl__hip" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__calf_upper" link2="stompyleg__fl__linkage_lower" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__calf_upper" link2="stompyleg__fl__linkage_upper" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__calf_upper" link2="stompyleg__fl__thigh" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__foot" link2="stompyleg__fl__hip" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__foot" link2="stompyleg__fl__linkage_lower" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__foot" link2="stompyleg__fl__linkage_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__foot" link2="stompyleg__fl__thigh" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__hip" link2="stompyleg__fl__linkage_lower" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__hip" link2="stompyleg__fl__linkage_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__hip" link2="stompyleg__fl__thigh" reason="Adjacent" />
+    <disable_collisions link1="stompyleg__fl__linkage_lower" link2="stompyleg__fl__linkage_upper" reason="Never" />
+    <disable_collisions link1="stompyleg__fl__linkage_lower" link2="stompyleg__fl__thigh" reason="Default" />
+    <disable_collisions link1="stompyleg__fl__linkage_upper" link2="stompyleg__fl__thigh" reason="Default" />
+</robot>

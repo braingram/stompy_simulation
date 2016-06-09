@@ -1,0 +1,19 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  stompyleg__body_to_fl:
+    has_velocity_limits: true
+    max_velocity: 10
+    has_acceleration_limits: false
+    max_acceleration: 0
+  stompyleg__fl__hip_to_thigh:
+    has_velocity_limits: true
+    max_velocity: 10
+    has_acceleration_limits: false
+    max_acceleration: 0
+  stompyleg__fl__thigh_to_calf_upper:
+    has_velocity_limits: true
+    max_velocity: 10
+    has_acceleration_limits: false
+    max_acceleration: 0
