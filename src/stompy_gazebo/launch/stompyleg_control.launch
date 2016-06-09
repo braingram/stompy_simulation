@@ -9,14 +9,13 @@
         hip_controller
         thigh_controller
         knee_controller
+        joint_state_controller
         "
     />
-    <!--
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
         respawn="false" output="screen">
         <remap from="/joint_states" to="/stompyleg/joint_states"/>
     </node>
-    -->
 
     <!--
     <param name="use_gui" value="true" />

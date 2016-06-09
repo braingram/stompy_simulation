@@ -1,0 +1,45 @@
+<launch>
+    <include file="$(find stompy_gazebo)/launch/stompy.launch" />
+
+  <!-- load controls configuration -->
+    <rosparam file="$(find stompy_gazebo)/config/stompy_control.yaml" command="load"/>
+    <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+        output="screen" ns="/stompy"
+        args="
+        fl_hip_controller
+        fl_thigh_controller
+        fl_knee_controller
+        fr_hip_controller
+        fr_thigh_controller
+        fr_knee_controller
+        ml_hip_controller
+        ml_thigh_controller
+        ml_knee_controller
+        mr_hip_controller
+        mr_thigh_controller
+        mr_knee_controller
+        rl_hip_controller
+        rl_thigh_controller
+        rl_knee_controller
+        rr_hip_controller
+        rr_thigh_controller
+        rr_knee_controller
+        joint_state_controller
+        "
+    />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+        respawn="false" output="screen">
+        <remap from="/joint_states" to="/stompy/joint_states"/>
+    </node>
+
+    <!--
+    <param name="use_gui" value="true" />
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    -->
+    <!--
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find stompy_gazebo)/rviz/stompy.rviz" />
+    -->
+    <!--
+    <node name="rviz" pkg="rviz" type="rviz" />
+    -->
+</launch>
