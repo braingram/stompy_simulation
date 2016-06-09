@@ -9,6 +9,12 @@
 
  <xacro:include filename="$(find stompy_description)/urdf/stompyleg_macro.urdf.xacro" />
 
+ <link name="stompy__base" />
+ <joint name="stompy__base_to_body" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <parent link="stompy__base" />
+  <child link="stompy__body" />
+ </joint>
  <link name="stompy__body">
     <inertial>
       <mass value="1823.41"/>

@@ -38,7 +38,9 @@
     <!-- somewhat guesses... -->
     <origin rpy="0  0  0" xyz="0.2418  0   -1.121"/>
     <axis xyz="0  0  1"/>
+    <!-- TODO sort out shock -->
     <limit effort="${max_e}" lower="-0.0527" upper="0.0527" velocity="${max_v}"/>
+    <!--<limit effort="3000" lower="0.0" upper="0.0" velocity="${max_v}"/>-->
   </joint>
   <!--
   <joint name="${prefix}${name}__linkage_upper_to_calf_lower" type="revolute">
@@ -70,6 +72,7 @@
     <axis xyz="1  0  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
   </joint>
+  <!-- TODO footpad -->
   <link name="${prefix}${name}__hip">
     <inertial>
       <mass value="28.231"/>

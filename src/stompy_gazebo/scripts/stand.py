@@ -25,7 +25,7 @@ for l in legs:
     for j in joints:
         tn = lc(l, j)
         print("Publishing to: %s" % tn)
-        p = rospy.Publisher(tn, std_msgs.msg.Float64, queue_size=10)
+        p = rospy.Publisher(tn, std_msgs.msg.Float64, queue_size=18)
         ps[tn] = p
 
 #pub = lambda lc, v: ps[lc].publish(fm(v))
@@ -52,6 +52,9 @@ def stand():
         pub(l, 'thigh', 0.6981)
         pub(l, 'knee', -0.6981)
         pub(l, 'hip', 0.)
+
+stand()
+stand()
 
 #r = rospy.Rate(10)
 while not rospy.is_shutdown():
