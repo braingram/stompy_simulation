@@ -233,32 +233,42 @@
     <limit effort="${max_e}" lower="-1.57079" upper="1.57079" velocity="${max_v}"/>
   </joint>
   <!-- transmission added for gazebo_ros_control, needed for every joint -->
-  <transmission name="body_to_${name}_tran">
+  <transmission name="${prefix}body_to_${name}_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}body_to_${name}">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="body_to_${name}_motor">
+    <actuator name="${prefix}body_to_${name}_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <transmission name="${name}_hip_to_thigh_tran">
+  <transmission name="${prefix}${name}_hip_to_thigh_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__hip_to_thigh">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${name}_hip_to_thigh_motor">
+    <actuator name="${prefix}${name}_hip_to_thigh_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <transmission name="${name}_thigh_to_calf_upper_tran">
+  <transmission name="${prefix}${name}_thigh_to_calf_upper_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__thigh_to_calf_upper">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${name}_thigh_to_calf_upper_motor">
+    <actuator name="${prefix}${name}_thigh_to_calf_upper_motor">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="${prefix}${name}_calf_upper_to_calf_lower_tran">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="${prefix}${name}__calf_upper_to_calf_lower">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="${prefix}${name}_calf_upper_to_calf_lower_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
