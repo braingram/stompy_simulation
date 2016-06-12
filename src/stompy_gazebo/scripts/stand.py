@@ -5,6 +5,8 @@ import sys
 import rospy
 import std_msgs.msg
 
+import leg
+
 
 # hip: -1.57, 1.57
 # thigh: 0, 0.6981
@@ -31,32 +33,19 @@ for l in legs:
 #pub = lambda lc, v: ps[lc].publish(fm(v))
 pub = lambda leg, joint, v: ps[lc(leg, joint)].publish(v)
 
-td = 0.005
-tmax = 0.6981
-tmin = 0
-tp = tmin
 
-kd = -0.005
-kmax = 0.
-kmin = -0.6981
-kp = kmax
-
-hd = 0.01
-hmax = 0.2
-hmin = -0.2
-hp = hmin
-
-
-def stand():
+def stand(z):
     for l in legs:
-        pub(l, 'thigh', 0.6981)
-        pub(l, 'knee', -0.6981)
-        pub(l, 'hip', 0.)
+        h, t, k = leg.compute_angles(1.1, 0.0, z)
+        pub(l, 'hip', h)
+        pub(l, 'thigh', t)
+        pub(l, 'knee', k)
 
-stand()
-stand()
-
+z = 0.2
 #r = rospy.Rate(10)
 while not rospy.is_shutdown():
-    stand()
-    rospy.sleep(1.)
+    stand(z)
+    if z < 1.2:
+        print("z: %s" % z)
+        z += 0.005
+    rospy.sleep(0.1)

@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
- <xacro:property name="max_e" value="10000"/>
+ <xacro:property name="max_e" value="100000000000"/>
+ <!--<xacro:property name="max_e" value="1000000"/>-->
  <xacro:property name="max_v" value="10"/>
 
  <xacro:macro name="leg" params="prefix name rpy xyz">
@@ -9,14 +10,18 @@
     <child link="${prefix}${name}__thigh"/>
     <origin rpy="0  0  0" xyz="0.279  0     0"/>
     <axis xyz="0  1  0"/>
-    <limit effort="${max_e}" lower="0.0" upper="0.6981" velocity="${max_v}"/>
+    <!--<limit effort="${max_e}" lower="0.0" upper="0.6981" velocity="${max_v}"/>-->
+    <limit effort="${max_e}" lower="0.0" upper="1.178" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__thigh_to_calf_upper" type="revolute">
     <parent link="${prefix}${name}__thigh"/>
     <child link="${prefix}${name}__calf_upper"/>
     <origin rpy="0  0  0" xyz="0.14399  0       1.364"/>
     <axis xyz="0  1  0"/>
-    <limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>
+    <!--<limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>-->
+    <limit effort="${max_e}" lower="-1.178" upper="0.0" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__calf_upper_to_linkage_upper" type="fixed">
     <parent link="${prefix}${name}__calf_upper"/>
@@ -24,6 +29,7 @@
     <origin rpy="0  0  0" xyz="0.0016  0     -0.8185"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__calf_upper_to_linkage_lower" type="fixed">
     <parent link="${prefix}${name}__calf_upper"/>
@@ -31,6 +37,7 @@
     <origin rpy="0  0  0" xyz="0.0388  0     -1.121"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__calf_upper_to_calf_lower" type="prismatic">
     <parent link="${prefix}${name}__calf_upper"/>
@@ -39,8 +46,10 @@
     <origin rpy="0  0  0" xyz="0.2418  0   -1.121"/>
     <axis xyz="0  0  1"/>
     <!-- TODO sort out shock -->
-    <limit effort="${max_e}" lower="-0.0527" upper="0.0527" velocity="${max_v}"/>
+    <!--<limit effort="${max_e}" lower="-0.0527" upper="0.0527" velocity="${max_v}"/>-->
+    <limit effort="10942" lower="0.0" upper="0.104" velocity="${max_v}"/>
     <!--<limit effort="3000" lower="0.0" upper="0.0" velocity="${max_v}"/>-->
+    <dynamics damping="10.0" />
   </joint>
   <!--
   <joint name="${prefix}${name}__linkage_upper_to_calf_lower" type="revolute">
@@ -64,6 +73,7 @@
     <origin rpy="0  0  0" xyz="-0.0171  0     -0.6656"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__ankle_to_foot" type="revolute">
     <parent link="${prefix}${name}__ankle"/>
@@ -71,6 +81,7 @@
     <origin rpy="0  0  0" xyz="0      0     -0.0412"/>
     <axis xyz="1  0  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <!-- TODO footpad -->
   <link name="${prefix}${name}__hip">
@@ -175,6 +186,7 @@
       <inertia ixx="1.827" ixy="0." ixz="0.243" iyy="1.859" iyz="0." izz="0.145"/>
     </inertial>
     <collision name="${prefix}${name}__collision">
+      <!--TODO figure out if this position is with a compressed shock -->
       <origin rpy="0  0  0" xyz="0.01567  0      -0.10663"/>
       <geometry>
         <box size="0.237352 0.180975 1.122347"/>
@@ -231,6 +243,7 @@
     <origin rpy="${rpy}" xyz="${xyz}"/>
     <axis xyz="0  0  1"/>
     <limit effort="${max_e}" lower="-1.57079" upper="1.57079" velocity="${max_v}"/>
+    <dynamics damping="10.0" />
   </joint>
   <!-- transmission added for gazebo_ros_control, needed for every joint -->
   <transmission name="${prefix}body_to_${name}_tran">

@@ -31,6 +31,7 @@
         rr_knee_controller
         rr_calf_controller
         joint_state_controller
+        --shutdown-timeout 3
         "
     />
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"

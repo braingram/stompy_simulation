@@ -3,28 +3,30 @@ stompyleg:
     joint_state_controller:
         type: joint_state_controller/JointStateController
         publish_rate: 10
-        extra_joints:
-            - name: 'stompyleg__fl__calf_lower_to_ankle'
-
-            - name: 'stompyleg__fl__ankle_to_foot'
+        #extra_joints:
+        #    - name: 'stompyleg__fl__calf_lower_to_ankle'
+        #
+        #    - name: 'stompyleg__fl__ankle_to_foot'
 
 # Position Controllers ---------------------------------------
     hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompyleg__body_to_fl
-        pid: {p: 3000.0, i: 50.0, d: 500.0}
+        pid: {p: 3000.0, i: 50.0, d: 500.0, i_clamp: 200}
 
     thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompyleg__fl__hip_to_thigh
-        pid: {p: 3000.0, i: 50.0, d: 500.0}
+        #pid: {p: 3000.0, i: 50.0, d: 500.0, i_clamp: 200}
+        pid: {p: 10000.0, i: 50.0, d: 100.0, i_clamp: 200}
 
     knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompyleg__fl__thigh_to_calf_upper
-        pid: {p: 3000.0, i: 50.0, d: 500.0}
+        pid: {p: 3000.0, i: 50.0, d: 500.0, i_clamp: 200}
 
     calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompyleg__fl__calf_upper_to_calf_lower
-        pid: {p: 3000.0, i: 50.0, d: 500.0}
+        #pid: {p: 3000.0, i: 50.0, d: 500.0, i_clamp: 200}
+        pid: {p: 105075.9, i: 0.0, d: 0.0}
