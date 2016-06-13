@@ -156,15 +156,14 @@ if __name__ == '__main__':
     sx = 0.8
     ex = 1.1
     sz = 0.1
-    #mz = 0.5
-    mz = 1.1
-    hz = 2.0
+    mz = 0.7
+    hz = 1.0
     funcs = [
         (stand, (), {'x': sx, 'start_z': sz, 'end_z': mz}),
-        (position_leg, ('fl', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('fr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
         (position_leg, ('ml', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
         (position_leg, ('mr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
+        (position_leg, ('fl', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
+        (position_leg, ('fr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
         (position_leg, ('rl', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
         (position_leg, ('rr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
         (stand, (), {'x': ex, 'start_z': mz, 'end_z': hz}),

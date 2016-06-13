@@ -9,22 +9,18 @@ import std_msgs.msg
 
 compute = False
 # meters
-#hip_limits = (-1.57079, 1.57079)
-#hip_limits = (-1.178, 1.178)
-hip_limits = (-0.9, 0.9)
+hip_limits = (-1.178, 1.178)
 hip_link = 0.279  # coxa
-#thigh_limits = (0., 0.6981)
-thigh_limits = (0., 1.178)
+thigh_limits = (0., 1.5708)
 thigh_link = 1.37158  # femer
-#calf_link = 1.49589  # tibia, varies with load
-# TODO get a better estimate of this
-knee_limits = (-1.178, 0.)
+calf_link = 1.828  # tibia, varies with load
+knee_limits = (-2.3736, 0.)
+
 # calf_link = 1.77
 # ankle = 0.0412
 # foot = 0.1 ?
 # 1.77 + 0.0412 + 0.1 = 1.9112
 #calf_link = 1.9112  # tibia, varies with load
-calf_link = 1.828  # tibia, varies with load
 
 
 def in_limits(angle, limits):
