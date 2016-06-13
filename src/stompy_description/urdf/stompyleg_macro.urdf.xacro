@@ -11,7 +11,7 @@
     <origin rpy="0  0  0" xyz="0.279  0     0"/>
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="0.0" upper="0.6981" velocity="${max_v}"/>-->
-    <limit effort="${max_e}" lower="0.0" upper="1.178" velocity="${max_v}"/>
+    <limit effort="${max_e}" lower="0.0" upper="1.5708" velocity="${max_v}"/>
     <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__thigh_to_calf_upper" type="revolute">
@@ -20,7 +20,7 @@
     <origin rpy="0  0  0" xyz="0.14399  0       1.364"/>
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>-->
-    <limit effort="${max_e}" lower="-1.178" upper="0.0" velocity="${max_v}"/>
+    <limit effort="${max_e}" lower="-2.3736" upper="0.0" velocity="${max_v}"/>
     <dynamics damping="10.0" />
   </joint>
   <joint name="${prefix}${name}__calf_upper_to_linkage_upper" type="fixed">
@@ -242,7 +242,7 @@
     <child link="${prefix}${name}__hip"/>
     <origin rpy="${rpy}" xyz="${xyz}"/>
     <axis xyz="0  0  1"/>
-    <limit effort="${max_e}" lower="-1.57079" upper="1.57079" velocity="${max_v}"/>
+    <limit effort="${max_e}" lower="-1.178" upper="1.178" velocity="${max_v}"/>
     <dynamics damping="10.0" />
   </joint>
   <!-- transmission added for gazebo_ros_control, needed for every joint -->
