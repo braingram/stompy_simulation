@@ -34,6 +34,13 @@ def in_limits(angle, limits):
         return False
     return True
 
+"""
+Forward
+x = cos(theta1) * [L1 + L2*cos(theta2) + L3*cos(theta2 + theta3 -180deg)]
+y = x * tan(theta1)
+z = [L2 * sin(theta2)] + [L3 * sin(theta2 + theta3 - 180deg)]
+"""
+
 
 def compute_angles(x, y, z, check_limits=True):
     """
@@ -44,8 +51,10 @@ def compute_angles(x, y, z, check_limits=True):
     # distance from hip to ground
     l = numpy.sqrt(x * x + y * y)
 
+    # in ino: theta 1
     hip_angle = numpy.arctan2(y, x)
 
+    # in ino: theta 2 up from horizontal
     L = numpy.sqrt(z_offset * z_offset + (l - hip_link) ** 2.)
     thigh_angle = (
         numpy.arccos(z_offset / L) +
@@ -54,6 +63,7 @@ def compute_angles(x, y, z, check_limits=True):
             (-2 * thigh_link * L)))
     thigh_angle = numpy.pi - thigh_angle
 
+    # in ino: theta 3
     knee_angle = numpy.arccos(
         (L ** 2 - calf_link ** 2 - thigh_link ** 2) /
         (-2 * calf_link * thigh_link))

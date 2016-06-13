@@ -3,10 +3,10 @@ stompyleg:
     joint_state_controller:
         type: joint_state_controller/JointStateController
         publish_rate: 10
-        #extra_joints:
-        #    - name: 'stompyleg__fl__calf_lower_to_ankle'
-        #
-        #    - name: 'stompyleg__fl__ankle_to_foot'
+        extra_joints:
+            - name: 'stompyleg__fl__calf_lower_to_ankle'
+        
+            - name: 'stompyleg__fl__ankle_to_foot'
 
 # Position Controllers ---------------------------------------
     hip_controller:
