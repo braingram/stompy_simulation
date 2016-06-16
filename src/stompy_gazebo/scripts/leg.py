@@ -9,7 +9,7 @@ import std_msgs.msg
 
 compute = False
 # meters
-hip_limits = (-1.178, 1.178)
+hip_limits = (-0.70616022, 0.70616022)
 hip_link = 0.279  # coxa
 thigh_limits = (0., 1.5708)
 thigh_link = 1.37158  # femer
@@ -43,6 +43,7 @@ def compute_angles(x, y, z, check_limits=True):
     hip: + tilts down
     knee: - tilts out
     """
+    #print('pt:', x, y, z)
     z_offset = z
     # distance from hip to ground
     l = numpy.sqrt(x * x + y * y)
