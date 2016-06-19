@@ -158,15 +158,28 @@ if __name__ == '__main__':
     sz = 0.1
     mz = 0.7
     hz = 1.0
+    mlpt = project_point('ml', 0, ex, hz)
+    mrpt = project_point('mr', 0, ex, hz)
+    flpt = project_point('fl', ex, 0, hz)
+    frpt = project_point('fr', ex, 0, hz)
+    rlpt = project_point('rl', -ex, 0., hz)
+    rrpt = project_point('rr', -ex, 0., hz)
+    dz = 0.01
     funcs = [
-        (stand, (), {'x': sx, 'start_z': sz, 'end_z': mz}),
-        (position_leg, ('ml', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('mr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('fl', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('fr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('rl', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (position_leg, ('rr', sx, 0., ex, 0.), {'zr': sz, 'zl': mz}),
-        (stand, (), {'x': ex, 'start_z': mz, 'end_z': hz}),
+        (stand, (), {'x': sx, 'start_z': sz, 'end_z': mz, 'dz': dz}),
+        (position_leg, ('ml', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (position_leg, ('mr', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (position_leg, ('fl', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (position_leg, ('fr', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (position_leg, ('rl', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (position_leg, ('rr', ex, 0., sx, 0.), {'zr': sz, 'zl': mz, 'dz': dz}),
+        (stand, (), {'x': ex, 'y': 0., 'start_z': mz, 'end_z': hz, 'dz': dz}),
+        (position_leg, ('ml', mlpt[0], mlpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
+        (position_leg, ('mr', mrpt[0], mrpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
+        (position_leg, ('fl', flpt[0], flpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
+        (position_leg, ('fr', frpt[0], frpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
+        (position_leg, ('rl', rlpt[0], rlpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
+        (position_leg, ('rr', rrpt[0], rrpt[1], ex, 0.), {'zr': sz, 'zl': hz, 'dz': dz}),
     ]
     i = 0
     state = {}

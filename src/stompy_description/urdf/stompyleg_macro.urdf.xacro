@@ -8,7 +8,7 @@
   <joint name="${prefix}${name}__hip_to_thigh" type="revolute">
     <parent link="${prefix}${name}__hip"/>
     <child link="${prefix}${name}__thigh"/>
-    <origin rpy="0  0  0" xyz="0.279  0     0"/>
+    <origin rpy="0  0  0" xyz="0.2794  0     0"/>
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="0.0" upper="0.6981" velocity="${max_v}"/>-->
     <limit effort="${max_e}" lower="0.0" upper="1.5708" velocity="${max_v}"/>
@@ -17,7 +17,7 @@
   <joint name="${prefix}${name}__thigh_to_calf_upper" type="revolute">
     <parent link="${prefix}${name}__thigh"/>
     <child link="${prefix}${name}__calf_upper"/>
-    <origin rpy="0  0  0" xyz="0.14399  0       1.364"/>
+    <origin rpy="0  0  0" xyz="0.144  0       1.36402"/>
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>-->
     <limit effort="${max_e}" lower="-2.3736" upper="0.0" velocity="${max_v}"/>
@@ -43,7 +43,8 @@
     <parent link="${prefix}${name}__calf_upper"/>
     <child link="${prefix}${name}__calf_lower"/>
     <!-- somewhat guesses... -->
-    <origin rpy="0  0  0" xyz="0.2418  0   -1.121"/>
+    <!--<origin rpy="0  0  0" xyz="0.2418  0   -1.121"/>-->
+    <origin rpy="0  0  0" xyz="0.2418  0   -1.14935"/>
     <axis xyz="0  0  1"/>
     <!-- TODO sort out shock -->
     <!--<limit effort="${max_e}" lower="-0.0527" upper="0.0527" velocity="${max_v}"/>-->

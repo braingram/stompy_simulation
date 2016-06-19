@@ -43,8 +43,9 @@
     </visual>
   </link>
 
-  <xacro:leg prefix="stompyleg__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1.2"/>
+  <xacro:leg prefix="stompyleg__" name="fl" rpy="0 0 0" xyz="2.35117  0.5842   1.2"/>
   <!--
+  <xacro:leg prefix="stompyleg__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1.2"/>
   <xacro:leg name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   1"/>
   <xacro:leg name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   1"/>
   <xacro:leg name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   1"/>
