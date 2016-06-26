@@ -23,6 +23,7 @@
     <limit effort="${max_e}" lower="-2.3736" upper="0.0" velocity="${max_v}"/>
     <dynamics damping="10.0" />
   </joint>
+  <!--
   <joint name="${prefix}${name}__calf_upper_to_linkage_upper" type="fixed">
     <parent link="${prefix}${name}__calf_upper"/>
     <child link="${prefix}${name}__linkage_upper"/>
@@ -39,6 +40,7 @@
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
     <dynamics damping="10.0" />
   </joint>
+  -->
   <joint name="${prefix}${name}__calf_upper_to_calf_lower" type="prismatic">
     <parent link="${prefix}${name}__calf_upper"/>
     <child link="${prefix}${name}__calf_lower"/>
@@ -142,6 +144,7 @@
       </geometry>
     </visual>
   </link>
+  <!--
   <link name="${prefix}${name}__linkage_upper">
     <inertial>
       <mass value="3.754"/>
@@ -180,6 +183,7 @@
       </geometry>
     </visual>
   </link>
+  -->
   <link name="${prefix}${name}__calf_lower">
     <inertial>
       <mass value="18.983"/>
