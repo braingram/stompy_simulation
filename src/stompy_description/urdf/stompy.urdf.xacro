@@ -18,27 +18,28 @@
  <link name="stompy__body">
     <inertial>
       <mass value="1823.41"/>
-      <origin rpy="0  0  0" xyz="0     0     1.495"/>
+      <!--<origin rpy="0  0  0" xyz="0     0     1.495"/>-->
+      <origin rpy="0  0  0" xyz="0     0     0"/>
       <inertia ixx="499.7" ixy="0.019" ixz="-172.0" iyy="3253.0" iyz="0.019" izz="3049.0"/>
     </inertial>
     <collision name="stompy__collision">
-      <origin rpy="0  0  0" xyz="0     0     1.495"/>
+      <origin rpy="0  0  0" xyz="0     0     0"/>
       <geometry>
-        <box size="4.47037 1.3716 1."/>
+        <box size="4.478688 1.168400 0.304800"/>
       </geometry>
     </collision>
     <visual name="stompy__visual">
-      <origin rpy="0  0  0" xyz="0  0  1"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
         <mesh filename="package://stompy_description/meshes/body.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
 
-  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1"/>
-  <xacro:leg prefix="stompy__" name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   1"/>
-  <xacro:leg prefix="stompy__" name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   1"/>
-  <xacro:leg prefix="stompy__" name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   1"/>
-  <xacro:leg prefix="stompy__" name="rl" rpy="0      0      2.3561" xyz="-2.1192  0.5842  1"/>
-  <xacro:leg prefix="stompy__" name="rr" rpy="0      0     -2.3561" xyz="-2.1192 -0.5842  1"/>
+  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="rl" rpy="0      0      2.3561" xyz="-2.1192  0.5842  -0.0967"/>
+  <xacro:leg prefix="stompy__" name="rr" rpy="0      0     -2.3561" xyz="-2.1192 -0.5842  -0.0967"/>
 </robot>
