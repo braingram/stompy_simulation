@@ -12,10 +12,10 @@ if __name__ == '__main__':
         try:
             rt = rospy.Time.now()
             listener.waitForTransform(
-                'stompyleg__fl__hip', 'stompyleg__fl__foot',
+                'stompyleg__fl__hip', 'stompyleg__fl__ankle',
                 rt, rospy.Duration(1.0))
             (t, r) = listener.lookupTransform(
-                'stompyleg__fl__hip', 'stompyleg__fl__foot',
+                'stompyleg__fl__hip', 'stompyleg__fl__ankle',
                 rt)
             print t, r
         except tf.LookupException:

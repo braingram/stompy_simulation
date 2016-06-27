@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
- <world name="default">
+  <world name="default">
+    <!--
     <physics type="ode">
       <gravity>0.000000 0. -9.8</gravity>
       <ode>
@@ -33,8 +34,8 @@
         <surface>
           <friction>
             <ode>
-              <mu>50000000</mu>
-              <mu2>50000000</mu2>
+              <mu>50</mu>
+              <mu2>50</mu2>
             </ode>
           </friction>
         </surface>
@@ -56,7 +57,10 @@
       </visual>
     </link>
   </model>
-
+  -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
     <include>
       <uri>model://sun</uri>
     </include>
