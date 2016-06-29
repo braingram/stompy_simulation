@@ -7,7 +7,8 @@
         ns="/stompyleg"
         args="
         hip_controller
-        calf_controller
+        thigh_controller
+        knee_controller
         joint_state_controller
         --shutdown-timeout 1
         "
