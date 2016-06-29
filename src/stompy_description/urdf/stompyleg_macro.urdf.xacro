@@ -281,30 +281,30 @@
   <transmission name="${prefix}body_to_${name}_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}body_to_${name}">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}body_to_${name}_motor">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="${prefix}${name}_hip_to_thigh_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__hip_to_thigh">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}${name}_hip_to_thigh_motor">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="${prefix}${name}_thigh_to_calf_upper_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__thigh_to_calf_upper">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}${name}_thigh_to_calf_upper_motor">
-      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <hardwareInterface>PositionJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>

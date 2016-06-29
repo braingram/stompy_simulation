@@ -36,10 +36,10 @@
     </visual>
   </link>
 
-  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="rl" rpy="0      0      2.3561" xyz="-2.1192  0.5842  -0.0967"/>
-  <xacro:leg prefix="stompy__" name="rr" rpy="0      0     -2.3561" xyz="-2.1192 -0.5842  -0.0967"/>
+  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.9599" xyz="2.35117  0.5842   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="fr" rpy="0      0     -0.9599" xyz="2.35117 -0.5842   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="ml" rpy="0      0      1.5706" xyz="0.0  0.6858   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="mr" rpy="0      0     -1.5706" xyz="0.0 -0.6858   -0.0967"/>
+  <xacro:leg prefix="stompy__" name="rl" rpy="0      0      2.1816" xyz="-2.35117  0.5842  -0.0967"/>
+  <xacro:leg prefix="stompy__" name="rr" rpy="0      0     -2.1816" xyz="-2.35117 -0.5842  -0.0967"/>
 </robot>

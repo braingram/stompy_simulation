@@ -21,119 +21,119 @@ stompy:
     fl_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_fl
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fl_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fl__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fl_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fl__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fl_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fl__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
 
     fr_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_fr
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fr_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fr__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fr_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fr__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     fr_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__fr__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
 
     ml_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_ml
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     ml_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__ml__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     ml_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__ml__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     ml_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__ml__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
 
     mr_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_mr
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     mr_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__mr__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     mr_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__mr__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     mr_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__mr__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
 
     rl_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_rl
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rl_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rl__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rl_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rl__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rl_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rl__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
 
     rr_hip_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__body_to_rr
-        pid: {p: 30000.0, i: 5000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rr_thigh_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rr__hip_to_thigh
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rr_knee_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rr__thigh_to_calf_upper
-        pid: {p: 30000.0, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 90000.0, i: 10000.0, d: 3000.0, i_clamp: 100000}
 
     rr_calf_controller:
         type: effort_controllers/JointPositionController
         joint: stompy__rr__calf_upper_to_calf_lower
-        pid: {p: 105075.9, i: 10000.0, d: 3000.0, i_clamp: 10000}
+        pid: {p: 105075.9, i: 0, d: 0}
