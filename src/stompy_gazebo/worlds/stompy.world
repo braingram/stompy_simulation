@@ -1,26 +1,28 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
-  <world name="default">
-    <!--
+    <world name="default">
+        <!--
     <physics type="ode">
       <gravity>0.000000 0. -9.8</gravity>
       <ode>
         <solver>
           <type>quick</type>
-          <iters>50</iters>
+          <iters>500</iters>
           <precon_iters>0</precon_iters>
           <sor>1.300000</sor>
         </solver>
         <constraints>
           <cfm>0.000000</cfm>
           <erp>0.200000</erp>
-          <contact_max_correcting_vel>100000000.000000</contact_max_correcting_vel>
+          <contact_max_correcting_vel>100.000000</contact_max_correcting_vel>
           <contact_surface_layer>0.001000</contact_surface_layer>
         </constraints>
       </ode>
       <real_time_update_rate>0.000000</real_time_update_rate>
-      <max_step_size>0.001000</max_step_size>
-    </physics>
+      <max_step_size>0.01000</max_step_size>
+  </physics>
+  -->
+  <!--
   <model name="ground_plane">
     <static>true</static>
     <link name="link">
@@ -31,11 +33,13 @@
             <size>100 100</size>
           </plane>
         </geometry>
+        <max_contacts>100</max_contacts>
         <surface>
           <friction>
             <ode>
-              <mu>50</mu>
-              <mu2>50</mu2>
+              <mu>200</mu>
+              <mu2>200</mu2>
+              <fdir1>0 1 0</fdir1>
             </ode>
           </friction>
         </surface>
@@ -57,7 +61,7 @@
       </visual>
     </link>
   </model>
-  -->
+    -->
     <include>
       <uri>model://ground_plane</uri>
     </include>
@@ -92,7 +96,7 @@
               <size>1 1 0.75</size>
             </box>
           </geometry>
-          <max_contacts>10</max_contacts>
+          <max_contacts>100</max_contacts>
           <surface>
             <bounce/>
             <friction>
@@ -146,7 +150,7 @@
               <size>1 1 0.75</size>
             </box>
           </geometry>
-          <max_contacts>10</max_contacts>
+          <max_contacts>100</max_contacts>
           <surface>
             <bounce/>
             <friction>
