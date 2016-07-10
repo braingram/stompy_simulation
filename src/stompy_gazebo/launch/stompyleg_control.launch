@@ -6,9 +6,7 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
         ns="/stompyleg"
         args="
-        hip_controller
-        thigh_controller
-        knee_controller
+        fl
         joint_state_controller
         --shutdown-timeout 1
         "
