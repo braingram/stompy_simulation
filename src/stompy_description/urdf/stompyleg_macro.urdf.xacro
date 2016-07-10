@@ -69,7 +69,7 @@
     <origin rpy="0  0  0" xyz="0.02  0     -0.968"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
-    <dynamics damping="30.0" />
+    <dynamics damping="1.0" />
   </joint>
   <joint name="${prefix}${name}__ankle_to_foot" type="revolute">
     <parent link="${prefix}${name}__ankle"/>
@@ -77,16 +77,14 @@
     <origin rpy="0  0  0" xyz="0      0     -0.0412"/>
     <axis xyz="1  0  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
-    <dynamics damping="30.0" />
+    <dynamics damping="1.0" />
 </joint>
-  <!--
   <joint name="${prefix}${name}__foot_to_pad" type="continuous">
     <parent link="${prefix}${name}__foot"/>
     <child link="${prefix}${name}__pad"/>
     <origin rpy="0 0 0" xyz="0 0 -0.153"/>
     <axis xyz="0 0 1"/>
   </joint>
-  -->
   <link name="${prefix}${name}__hip">
     <inertial>
       <mass value="28.231"/>
@@ -244,11 +242,9 @@
   <gazebo reference="${prefix}${name}__foot">
     <mu1>50</mu1>
     <mu2>50</mu2>
-    <minDepth>0.003</minDepth>
+    <maxVel>1000.0</maxVel>
+    <minDepth>0.0000003</minDepth>
   </gazebo>
-<!--
-  -->
-  <!--
   <link name="${prefix}${name}__pad">
     <inertial>
       <mass value="1"/>
@@ -269,13 +265,11 @@
     </visual>
   </link>
   <gazebo reference="${prefix}${name}__pad">
-    <mu1>50</mu1>
-    <mu2>50</mu2>
-    <fdir1>0 0 0</fdir1>
-    <minDepth>0.0001</minDepth>
-    <maxVel>1000000000.0</maxVel>
+    <mu1>500</mu1>
+    <mu2>500</mu2>
+    <maxVel>1000.0</maxVel>
+    <minDepth>0.0000003</minDepth>
   </gazebo>
-  -->
   <joint name="${prefix}body_to_${name}" type="revolute">
     <parent link="${prefix}body"/>
     <child link="${prefix}${name}__hip"/>

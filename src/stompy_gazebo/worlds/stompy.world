@@ -1,7 +1,18 @@
 <?xml version="1.0" ?>
 <sdf version="1.4">
     <world name="default">
-        <!--
+    <physics type="ode">
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>240</iters>
+          <sor>1.6</sor>
+        </solver>
+      </ode>
+      <!-- 0.003 for 'realish' time but more jitter -->
+      <max_step_size>0.001000</max_step_size>
+    </physics>
+    <!--
     <physics type="ode">
       <gravity>0.000000 0. -9.8</gravity>
       <ode>
