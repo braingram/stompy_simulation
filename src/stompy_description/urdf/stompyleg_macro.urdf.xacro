@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
- <xacro:property name="max_e" value="1000000"/>
+ <xacro:property name="max_e" value="10000000"/>
  <xacro:property name="max_v" value="10"/>
 
  <xacro:macro name="leg" params="prefix name rpy xyz">
@@ -10,7 +10,7 @@
     <origin rpy="0  0  0" xyz="0.279  0     0"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0.0" upper="1.5708" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   <joint name="${prefix}${name}__thigh_to_calf_upper" type="revolute">
     <parent link="${prefix}${name}__thigh"/>
@@ -19,7 +19,7 @@
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>-->
     <limit effort="${max_e}" lower="-2.3736" upper="0.0" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   <!--
   <joint name="${prefix}${name}__calf_upper_to_linkage_upper" type="fixed">
@@ -28,7 +28,7 @@
     <origin rpy="0  0  0" xyz="0.0016  0     -0.8185"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   <joint name="${prefix}${name}__calf_upper_to_linkage_lower" type="fixed">
     <parent link="${prefix}${name}__calf_upper"/>
@@ -36,7 +36,7 @@
     <origin rpy="0  0  0" xyz="0.0388  0     -1.121"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   -->
   <joint name="${prefix}${name}__calf_upper_to_calf_lower" type="prismatic">
@@ -45,7 +45,7 @@
     <origin rpy="0  0  0" xyz="0.203  0   -0.847"/>
     <axis xyz="0  0  1"/>
     <limit effort="10942" lower="0.0" upper="0.104" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   <!--
   <joint name="${prefix}${name}__linkage_upper_to_calf_lower" type="revolute">
@@ -69,7 +69,7 @@
     <origin rpy="0  0  0" xyz="0.02  0     -0.968"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="30.0" />
   </joint>
   <joint name="${prefix}${name}__ankle_to_foot" type="revolute">
     <parent link="${prefix}${name}__ankle"/>
@@ -77,7 +77,7 @@
     <origin rpy="0  0  0" xyz="0      0     -0.0412"/>
     <axis xyz="1  0  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="30.0" />
 </joint>
   <!--
   <joint name="${prefix}${name}__foot_to_pad" type="continuous">
@@ -242,13 +242,8 @@
     </visual>
 </link>
   <gazebo reference="${prefix}${name}__foot">
-    <mu1>100000000000</mu1>
-    <mu2>100000000000</mu2>
-    <!--
-    <fdir1>0 1 0</fdir1>
-    -->
-    <kp>100000000000000.0</kp>
-    <kd>0.00001</kd>
+    <mu1>50</mu1>
+    <mu2>50</mu2>
     <minDepth>0.003</minDepth>
   </gazebo>
 <!--
@@ -287,36 +282,36 @@
     <origin rpy="${rpy}" xyz="${xyz}"/>
     <axis xyz="0  0  1"/>
     <limit effort="${max_e}" lower="-1.178" upper="1.178" velocity="${max_v}"/>
-    <dynamics damping="10.0" />
+    <dynamics damping="10000.0" />
   </joint>
   <!-- transmission added for gazebo_ros_control, needed for every joint -->
   <transmission name="${prefix}body_to_${name}_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}body_to_${name}">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}body_to_${name}_motor">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="${prefix}${name}_hip_to_thigh_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__hip_to_thigh">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}${name}_hip_to_thigh_motor">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
   <transmission name="${prefix}${name}_thigh_to_calf_upper_tran">
     <type>transmission_interface/SimpleTransmission</type>
     <joint name="${prefix}${name}__thigh_to_calf_upper">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
     <actuator name="${prefix}${name}_thigh_to_calf_upper_motor">
-      <hardwareInterface>PositionJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>

@@ -7,25 +7,20 @@ stompyleg:
             - name: 'stompyleg__fl__calf_lower_to_ankle'
             - name: 'stompyleg__fl__ankle_to_foot'
 
-# Position Controllers ---------------------------------------
-#    leg_controller:
-#        type: 'position_controllers/JointTrajectoryController'
-#        joints:
-#            - 'stompyleg__body_to_fl'
-#            - 'stompyleg__fl__hip_to_thigh'
-#            - 'stompyleg__fl__thigh_to_calf_upper'
-
     hip_controller:
-        type: 'position_controllers/JointPositionController'
+        type: 'effort_controllers/JointPositionController'
         joint: 'stompyleg__body_to_fl'
+        pid: {p: 30000, i: 5000.0, d: 3000.0, i_clamp: 10000}
 
     thigh_controller:
-        type: 'position_controllers/JointPositionController'
+        type: 'effort_controllers/JointPositionController'
         joint: 'stompyleg__fl__hip_to_thigh'
+        pid: {p: 30000, i: 5000.0, d: 10000.0, i_clamp: 10000}
 
     knee_controller:
-        type: 'position_controllers/JointPositionController'
+        type: 'effort_controllers/JointPositionController'
         joint: 'stompyleg__fl__thigh_to_calf_upper'
+        pid: {p: 30000, i: 5000.0, d: 10000.0, i_clamp: 10000}
 
     calf_controller:
         type: 'effort_controllers/JointPositionController'

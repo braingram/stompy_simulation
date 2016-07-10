@@ -2,7 +2,7 @@ stompy:
 # Publish all joint states -----------------------------------
     joint_state_controller:
         type: joint_state_controller/JointStateController
-        publish_rate: 10
+        publish_rate: 50
         extra_joints:
             - name: 'stompy__fl__calf_lower_to_ankle'
             - name: 'stompy__fl__ankle_to_foot'
@@ -19,16 +19,19 @@ stompy:
 
 # Position Controllers ---------------------------------------
     fl_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_fl
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fl_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__fl__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fl_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__fl__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fl_calf_controller:
         type: effort_controllers/JointPositionController
@@ -36,16 +39,19 @@ stompy:
         pid: {p: 105075.9, i: 0, d: 0}
 
     fr_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_fr
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fr_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__fr__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fr_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__fr__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     fr_calf_controller:
         type: effort_controllers/JointPositionController
@@ -53,16 +59,19 @@ stompy:
         pid: {p: 105075.9, i: 0, d: 0}
 
     ml_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_ml
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     ml_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__ml__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     ml_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__ml__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     ml_calf_controller:
         type: effort_controllers/JointPositionController
@@ -70,16 +79,19 @@ stompy:
         pid: {p: 105075.9, i: 0, d: 0}
 
     mr_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_mr
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     mr_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__mr__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     mr_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__mr__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     mr_calf_controller:
         type: effort_controllers/JointPositionController
@@ -87,16 +99,19 @@ stompy:
         pid: {p: 105075.9, i: 0, d: 0}
 
     rl_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_rl
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rl_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__rl__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rl_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__rl__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rl_calf_controller:
         type: effort_controllers/JointPositionController
@@ -104,16 +119,19 @@ stompy:
         pid: {p: 105075.9, i: 0, d: 0}
 
     rr_hip_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__body_to_rr
+        pid: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rr_thigh_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__rr__hip_to_thigh
+        pid: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rr_knee_controller:
-        type: position_controllers/JointPositionController
+        type: effort_controllers/JointPositionController
         joint: stompy__rr__thigh_to_calf_upper
+        pid: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
 
     rr_calf_controller:
         type: effort_controllers/JointPositionController
