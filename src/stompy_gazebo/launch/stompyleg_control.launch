@@ -7,6 +7,7 @@
         ns="/stompyleg"
         args="
         fl
+        calf_controller
         joint_state_controller
         --shutdown-timeout 1
         "

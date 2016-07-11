@@ -6,6 +6,7 @@ stompyleg:
         extra_joints:
             - name: 'stompyleg__fl__calf_lower_to_ankle'
             - name: 'stompyleg__fl__ankle_to_foot'
+            - name: 'stompyleg__fl__foot_to_pad'
 
     fl:
         type: 'effort_controllers/JointTrajectoryController'
@@ -13,6 +14,14 @@ stompyleg:
             - stompyleg__body_to_fl
             - stompyleg__fl__hip_to_thigh
             - stompyleg__fl__thigh_to_calf_upper
+
+        constraints:
+            stompyleg__body_to_fl:
+                goal: 0.02
+            stompyleg__fl__hip_to_thigh:
+                goal: 0.02
+            stompyleg__fl__thigh_to_calf_upper:
+                goal: 0.02
 
         gains:
             stompyleg__body_to_fl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}

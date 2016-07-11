@@ -6,29 +6,17 @@
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
         output="screen" ns="/stompy"
         args="
-        fl_hip_controller
-        fl_thigh_controller
-        fl_knee_controller
+        fl
         fl_calf_controller
-        fr_hip_controller
-        fr_thigh_controller
-        fr_knee_controller
+        fr
         fr_calf_controller
-        ml_hip_controller
-        ml_thigh_controller
-        ml_knee_controller
+        ml
         ml_calf_controller
-        mr_hip_controller
-        mr_thigh_controller
-        mr_knee_controller
+        mr
         mr_calf_controller
-        rl_hip_controller
-        rl_thigh_controller
-        rl_knee_controller
+        rl
         rl_calf_controller
-        rr_hip_controller
-        rr_thigh_controller
-        rr_knee_controller
+        rr
         rr_calf_controller
         joint_state_controller
         --shutdown-timeout 3

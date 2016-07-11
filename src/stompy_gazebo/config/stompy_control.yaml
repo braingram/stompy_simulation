@@ -6,16 +6,95 @@ stompy:
         extra_joints:
             - name: 'stompy__fl__calf_lower_to_ankle'
             - name: 'stompy__fl__ankle_to_foot'
+            - name: 'stompy__fl__foot_to_pad'
             - name: 'stompy__fr__calf_lower_to_ankle'
             - name: 'stompy__fr__ankle_to_foot'
+            - name: 'stompy__fr__foot_to_pad'
             - name: 'stompy__ml__calf_lower_to_ankle'
             - name: 'stompy__ml__ankle_to_foot'
+            - name: 'stompy__ml__foot_to_pad'
             - name: 'stompy__mr__calf_lower_to_ankle'
             - name: 'stompy__mr__ankle_to_foot'
+            - name: 'stompy__mr__foot_to_pad'
             - name: 'stompy__rl__calf_lower_to_ankle'
             - name: 'stompy__rl__ankle_to_foot'
+            - name: 'stompy__rl__foot_to_pad'
             - name: 'stompy__rr__calf_lower_to_ankle'
             - name: 'stompy__rr__ankle_to_foot'
+            - name: 'stompy__rr__foot_to_pad'
+
+    fl:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_fl
+            - stompy__fl__hip_to_thigh
+            - stompy__fl__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_fl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__fl__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__fl__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+    fr:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_fr
+            - stompy__fr__hip_to_thigh
+            - stompy__fr__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_fr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__fr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__fr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+    ml:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_ml
+            - stompy__ml__hip_to_thigh
+            - stompy__ml__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_ml: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__ml__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__ml__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+    mr:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_mr
+            - stompy__mr__hip_to_thigh
+            - stompy__mr__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_mr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__mr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__mr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+    rl:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_rl
+            - stompy__rl__hip_to_thigh
+            - stompy__rl__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_rl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__rl__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__rl__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+    rr:
+        type: 'effort_controllers/JointTrajectoryController'
+        joints:
+            - stompy__body_to_rr
+            - stompy__rr__hip_to_thigh
+            - stompy__rr__thigh_to_calf_upper
+
+        gains:
+            stompy__body_to_rr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__rr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
+            stompy__rr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
 
 # Position Controllers ---------------------------------------
     fl_hip_controller:
