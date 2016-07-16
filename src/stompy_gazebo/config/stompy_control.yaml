@@ -2,7 +2,7 @@ stompy:
 # Publish all joint states -----------------------------------
     joint_state_controller:
         type: joint_state_controller/JointStateController
-        publish_rate: 50
+        publish_rate: 10
         extra_joints:
             - name: 'stompy__fl__calf_lower_to_ankle'
             - name: 'stompy__fl__ankle_to_foot'
@@ -30,10 +30,23 @@ stompy:
             - stompy__fl__hip_to_thigh
             - stompy__fl__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_fl:
+                goal: 0.1
+            stompy__fl__hip_to_thigh:
+                goal: 0.1
+            stompy__fl__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_fl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__fl__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__fl__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
     fr:
         type: 'effort_controllers/JointTrajectoryController'
@@ -42,10 +55,23 @@ stompy:
             - stompy__fr__hip_to_thigh
             - stompy__fr__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_fr:
+                goal: 0.1
+            stompy__fr__hip_to_thigh:
+                goal: 0.1
+            stompy__fr__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_fr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__fr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__fr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
     ml:
         type: 'effort_controllers/JointTrajectoryController'
@@ -54,10 +80,23 @@ stompy:
             - stompy__ml__hip_to_thigh
             - stompy__ml__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_ml:
+                goal: 0.1
+            stompy__ml__hip_to_thigh:
+                goal: 0.1
+            stompy__ml__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_ml: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__ml__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__ml__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
     mr:
         type: 'effort_controllers/JointTrajectoryController'
@@ -66,10 +105,23 @@ stompy:
             - stompy__mr__hip_to_thigh
             - stompy__mr__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_mr:
+                goal: 0.1
+            stompy__mr__hip_to_thigh:
+                goal: 0.1
+            stompy__mr__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_mr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__mr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__mr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
     rl:
         type: 'effort_controllers/JointTrajectoryController'
@@ -78,10 +130,23 @@ stompy:
             - stompy__rl__hip_to_thigh
             - stompy__rl__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_rl:
+                goal: 0.1
+            stompy__rl__hip_to_thigh:
+                goal: 0.1
+            stompy__rl__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_rl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__rl__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__rl__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
     rr:
         type: 'effort_controllers/JointTrajectoryController'
@@ -90,10 +155,23 @@ stompy:
             - stompy__rr__hip_to_thigh
             - stompy__rr__thigh_to_calf_upper
 
+        constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
+            stompy__body_to_rr:
+                goal: 0.1
+            stompy__rr__hip_to_thigh:
+                goal: 0.1
+            stompy__rr__thigh_to_calf_upper:
+                goal: 0.1
+
         gains:
             stompy__body_to_rr: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__rr__hip_to_thigh: {p: 800000, i: 50.0, d: 30.0, i_clamp: 10.0}
             stompy__rr__thigh_to_calf_upper: {p: 360000, i: 50.0, d: 30.0, i_clamp: 10.0}
+
+        state_publish_rate: 10
+        action_monitor_rate: 10
 
 
 # Position Controllers ---------------------------------------

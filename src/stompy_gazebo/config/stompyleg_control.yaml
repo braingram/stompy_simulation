@@ -17,11 +17,11 @@ stompyleg:
 
         constraints:
             stompyleg__body_to_fl:
-                goal: 0.02
+                goal: 0.1
             stompyleg__fl__hip_to_thigh:
-                goal: 0.02
+                goal: 0.1
             stompyleg__fl__thigh_to_calf_upper:
-                goal: 0.02
+                goal: 0.1
 
         gains:
             stompyleg__body_to_fl: {p: 480000, i: 50.0, d: 30.0, i_clamp: 10.0}
