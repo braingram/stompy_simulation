@@ -16,6 +16,8 @@ stompy:
             - stompy__fl__thigh_to_calf_upper
 
         constraints:
+            goal_time: 1.0
+            stopped_velocity_tolerance: 0.1
             stompy__body_to_fl:
                 goal: 0.1
             stompy__fl__hip_to_thigh:

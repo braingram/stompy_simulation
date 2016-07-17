@@ -1,0 +1,4 @@
+<launch>
+    <include file="$(find stompy_gazebo)/launch/stompy_control.launch" />
+    <node name="joy_node" pkg="joy" type="joy_node" />
+</launch>
