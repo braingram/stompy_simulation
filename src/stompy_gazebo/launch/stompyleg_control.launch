@@ -4,7 +4,7 @@
   <!-- load controls configuration -->
     <rosparam file="$(find stompy_gazebo)/config/stompyleg_control.yaml" command="load"/>
     <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-        ns="/stompyleg"
+        ns="/stompy"
         args="
         fl
         calf_controller
@@ -14,14 +14,14 @@
         />
     <!--
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-     <remap from="/joint_states" to="/stompyleg/joint_states"/>
+     <remap from="/joint_states" to="/stompy/joint_states"/>
      <param name="publish_frequency" type="double" value="10.0"/>
     </node>
     -->
 
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
         respawn="false">
-     <remap from="/joint_states" to="/stompyleg/joint_states"/>
+     <remap from="/joint_states" to="/stompy/joint_states"/>
      <param name="publish_frequency" type="double" value="10.0"/>
     </node>
     <!--

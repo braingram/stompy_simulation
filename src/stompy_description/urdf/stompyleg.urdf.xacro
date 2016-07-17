@@ -1,38 +1,38 @@
 <?xml version="1.0" ?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="stompyleg">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="stompy">
 <!--
      build 1 leg and a fake body
  -->
  <gazebo>
   <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-    <robotNamespace>/stompyleg</robotNamespace>
+    <robotNamespace>/stompy</robotNamespace>
   </plugin>
  </gazebo>
 
  <xacro:include filename="$(find stompy_description)/urdf/stompyleg_macro.urdf.xacro" />
 
- <link name="stompyleg__base" />
- <joint name="stompyleg__base_to_body" type="fixed">
+ <link name="stompy__base" />
+ <joint name="stompy__base_to_body" type="fixed">
   <origin xyz="0 0 0" rpy="0 0 0"/>
-  <parent link="stompyleg__base" />
-  <child link="stompyleg__body" />
+  <parent link="stompy__base" />
+  <child link="stompy__body" />
  </joint>
 
- <link name="stompyleg__body">
+ <link name="stompy__body">
     <inertial>
       <mass value="1823.41"/>
       <!--<origin rpy="0  0  0" xyz="0     0     1.495"/>-->
       <origin rpy="0  0  0" xyz="0     0     0.7"/>
       <inertia ixx="499.7" ixy="0.019" ixz="-172.0" iyy="3253.0" iyz="0.019" izz="3049.0"/>
     </inertial>
-    <collision name="stompyleg__collision">
+    <collision name="stompy__collision">
       <!--<origin rpy="0  0  0" xyz="0     0     1.495"/>-->
       <origin rpy="0  0  0" xyz="0     0     0.7"/>
       <geometry>
         <box size="4.47037 1.3716 1."/>
       </geometry>
     </collision>
-    <visual name="stompyleg__visual">
+    <visual name="stompy__visual">
       <origin rpy="0  0  0" xyz="0  0  0.7"/>
       <geometry>
         <box size="4.47037 1.3716 1."/>
@@ -43,9 +43,9 @@
     </visual>
   </link>
 
-  <xacro:leg prefix="stompyleg__" name="fl" rpy="0 0 0" xyz="2.35117  0.5842   1.2"/>
+  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0" xyz="2.35117  0.5842   1.2"/>
   <!--
-  <xacro:leg prefix="stompyleg__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1.2"/>
+  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1.2"/>
   <xacro:leg name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   1"/>
   <xacro:leg name="ml" rpy="0      0      1.5706" xyz="0.11597  0.6858   1"/>
   <xacro:leg name="mr" rpy="0      0     -1.5706" xyz="0.11597 -0.6858   1"/>
