@@ -9,26 +9,26 @@
 
  <xacro:include filename="$(find stompy_description)/urdf/stompyleg_macro.urdf.xacro" />
 
- <link name="stompy__base" />
- <joint name="stompy__base_to_body" type="fixed">
+ <link name="base_link" />
+ <joint name="body" type="fixed">
   <origin xyz="0 0 0" rpy="0 0 0"/>
-  <parent link="stompy__base" />
-  <child link="stompy__body" />
+  <parent link="base_link" />
+  <child link="body_link" />
  </joint>
- <link name="stompy__body">
+ <link name="body_link">
     <inertial>
       <mass value="1823.41"/>
       <!--<origin rpy="0  0  0" xyz="0     0     1.495"/>-->
       <origin rpy="0  0  0" xyz="0     0     0"/>
       <inertia ixx="499.7" ixy="0.019" ixz="-172.0" iyy="3253.0" iyz="0.019" izz="3049.0"/>
     </inertial>
-    <collision name="stompy__collision">
+    <collision name="body_link_collision">
       <origin rpy="0  0  0" xyz="0     0     0"/>
       <geometry>
         <box size="4.478688 1.168400 0.304800"/>
       </geometry>
     </collision>
-    <visual name="stompy__visual">
+    <visual name="body_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
         <mesh filename="package://stompy_description/meshes/body.stl" scale="1.0 1.0 1.0"/>
@@ -36,10 +36,10 @@
     </visual>
   </link>
 
-  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.9599" xyz="2.35117  0.5842   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="fr" rpy="0      0     -0.9599" xyz="2.35117 -0.5842   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="ml" rpy="0      0      1.5706" xyz="0.0  0.6858   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="mr" rpy="0      0     -1.5706" xyz="0.0 -0.6858   -0.0967"/>
-  <xacro:leg prefix="stompy__" name="rl" rpy="0      0      2.1816" xyz="-2.35117  0.5842  -0.0967"/>
-  <xacro:leg prefix="stompy__" name="rr" rpy="0      0     -2.1816" xyz="-2.35117 -0.5842  -0.0967"/>
+  <xacro:leg name="fl" rpy="0 0 0.9599" xyz="2.35117  0.5842   -0.0967"/>
+  <xacro:leg name="fr" rpy="0 0 -0.9599" xyz="2.35117 -0.5842   -0.0967"/>
+  <xacro:leg name="ml" rpy="0 0 1.5706" xyz="0.0  0.6858   -0.0967"/>
+  <xacro:leg name="mr" rpy="0 0 -1.5706" xyz="0.0 -0.6858   -0.0967"/>
+  <xacro:leg name="rl" rpy="0 0 2.1816" xyz="-2.35117  0.5842  -0.0967"/>
+  <xacro:leg name="rr" rpy="0 0 -2.1816" xyz="-2.35117 -0.5842  -0.0967"/>
 </robot>

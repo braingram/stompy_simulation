@@ -3,18 +3,17 @@
  <xacro:property name="max_e" value="10000000"/>
  <xacro:property name="max_v" value="10"/>
 
- <xacro:macro name="leg" params="prefix name rpy xyz">
-  <joint name="${prefix}${name}__hip_to_thigh" type="revolute">
-    <parent link="${prefix}${name}__hip"/>
-    <child link="${prefix}${name}__thigh"/>
+ <xacro:macro name="leg" params="name rpy xyz"> <joint name="${name}_thigh" type="revolute">
+    <parent link="${name}_hip_link"/>
+    <child link="${name}_thigh_link"/>
     <origin rpy="0  0  0" xyz="0.279  0     0"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0.0" upper="1.5708" velocity="${max_v}"/>
     <dynamics damping="10000.0" />
   </joint>
-  <joint name="${prefix}${name}__thigh_to_calf_upper" type="revolute">
-    <parent link="${prefix}${name}__thigh"/>
-    <child link="${prefix}${name}__calf_upper"/>
+  <joint name="${name}_knee" type="revolute">
+    <parent link="${name}_thigh_link"/>
+    <child link="${name}_calf_upper_link"/>
     <origin rpy="0  0  0" xyz="0.143  0       1.364"/>
     <axis xyz="0  1  0"/>
     <!--<limit effort="${max_e}" lower="-0.6981" upper="0.0" velocity="${max_v}"/>-->
@@ -22,120 +21,120 @@
     <dynamics damping="10000.0" />
   </joint>
   <!--
-  <joint name="${prefix}${name}__calf_upper_to_linkage_upper" type="fixed">
-    <parent link="${prefix}${name}__calf_upper"/>
-    <child link="${prefix}${name}__linkage_upper"/>
+  <joint name="${name}__calf_upper_to_linkage_upper" type="fixed">
+    <parent link="${name}__calf_upper"/>
+    <child link="${name}__linkage_upper"/>
     <origin rpy="0  0  0" xyz="0.0016  0     -0.8185"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
     <dynamics damping="10000.0" />
   </joint>
-  <joint name="${prefix}${name}__calf_upper_to_linkage_lower" type="fixed">
-    <parent link="${prefix}${name}__calf_upper"/>
-    <child link="${prefix}${name}__linkage_lower"/>
+  <joint name="${name}__calf_upper_to_linkage_lower" type="fixed">
+    <parent link="${name}__calf_upper"/>
+    <child link="${name}__linkage_lower"/>
     <origin rpy="0  0  0" xyz="0.0388  0     -1.121"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
     <dynamics damping="10000.0" />
   </joint>
   -->
-  <joint name="${prefix}${name}__calf_upper_to_calf_lower" type="prismatic">
-    <parent link="${prefix}${name}__calf_upper"/>
-    <child link="${prefix}${name}__calf_lower"/>
+  <joint name="${name}_calf" type="prismatic">
+    <parent link="${name}_calf_upper_link"/>
+    <child link="${name}_calf_lower_link"/>
     <origin rpy="0  0  0" xyz="0.203  0   -0.847"/>
     <axis xyz="0  0  1"/>
     <limit effort="10942" lower="0.0" upper="0.104" velocity="${max_v}"/>
     <dynamics damping="10000.0" />
   </joint>
   <!--
-  <joint name="${prefix}${name}__linkage_upper_to_calf_lower" type="revolute">
-    <parent link="${prefix}${name}__linkage_upper"/>
-    <child link="${prefix}${name}__calf_lower"/>
+  <joint name="${name}__linkage_upper_to_calf_lower" type="revolute">
+    <parent link="${name}__linkage_upper"/>
+    <child link="${name}__calf_lower"/>
     <origin rpy="0  0  0" xyz="0.203  0     0"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0.0" upper="0.349" velocity="${max_v}"/>
   </joint>
-  <joint name="${prefix}${name}__linkage_lower_to_calf_lower" type="fixed">
-    <parent link="${prefix}${name}__linkage_lower"/>
-    <child link="${prefix}${name}__calf_lower"/>
+  <joint name="${name}__linkage_lower_to_calf_lower" type="fixed">
+    <parent link="${name}__linkage_lower"/>
+    <child link="${name}__calf_lower"/>
     <origin rpy="0  0  0" xyz="2.02900000e-01   0.00000000e+00   1.00000000e-04"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="0" upper="0" velocity="${max_v}"/>
   </joint>
   -->
-  <joint name="${prefix}${name}__calf_lower_to_ankle" type="revolute">
-    <parent link="${prefix}${name}__calf_lower"/>
-    <child link="${prefix}${name}__ankle"/>
+  <joint name="${name}_ankle" type="revolute">
+    <parent link="${name}_calf_lower_link"/>
+    <child link="${name}_ankle_link"/>
     <origin rpy="0  0  0" xyz="0.02  0     -0.968"/>
     <axis xyz="0  1  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
     <dynamics damping="1.0" />
   </joint>
-  <joint name="${prefix}${name}__ankle_to_foot" type="revolute">
-    <parent link="${prefix}${name}__ankle"/>
-    <child link="${prefix}${name}__foot"/>
+  <joint name="${name}_foot" type="revolute">
+    <parent link="${name}_ankle_link"/>
+    <child link="${name}_foot_link"/>
     <origin rpy="0  0  0" xyz="0      0     -0.0412"/>
     <axis xyz="1  0  0"/>
     <limit effort="${max_e}" lower="-1.3962" upper="1.3962" velocity="${max_v}"/>
     <dynamics damping="1.0" />
 </joint>
-  <joint name="${prefix}${name}__foot_to_pad" type="continuous">
-    <parent link="${prefix}${name}__foot"/>
-    <child link="${prefix}${name}__pad"/>
+  <joint name="${name}_pad" type="continuous">
+    <parent link="${name}_foot_link"/>
+    <child link="${name}_pad_link"/>
     <origin rpy="0 0 0" xyz="0 0 -0.153"/>
     <axis xyz="0 0 1"/>
   </joint>
-  <link name="${prefix}${name}__hip">
+  <link name="${name}_hip_link">
     <inertial>
       <mass value="28.231"/>
       <origin rpy="0  0  0" xyz="0.114006 0.000000 0.032923"/>
       <inertia ixx="0.417" ixy="0." ixz="0.026" iyy="0.327" iyz="0." izz="0.337"/>
     </inertial>
-    <collision name="${prefix}${name}__hip_collision">
+    <collision name="${name}_hip_link_collision">
       <origin rpy="0  0  0" xyz="0.1341685 -0.000000 0.096707"/>
       <geometry>
         <box size="0.388937 0.411136 0.304614"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__hip_visual">
+    <visual name="${name}_hip_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/hip.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
-  <link name="${prefix}${name}__thigh">
+  <link name="${name}_thigh_link">
     <inertial>
       <mass value="64.053"/>
       <origin rpy="0  0  0" xyz="-0.041591 -0.000000 0.526720"/>
       <inertia ixx="10.62" ixy="0." ixz="-0.34" iyy="10.92" iyz="0." izz="1.334"/>
     </inertial>
-    <collision name="${prefix}${name}__thigh_collision">
+    <collision name="${name}_thigh_link_collision">
       <origin rpy="0  0  0" xyz="-0.078093 -0.000000 0.6820835"/>
       <geometry>
         <box size="0.525414 0.273050 1.446567"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__thigh_visual">
+    <visual name="${name}_thigh_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/thigh.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
-  <link name="${prefix}${name}__calf_upper">
+  <link name="${name}_calf_upper_link">
     <inertial>
       <mass value="39.145"/>
       <origin rpy="0  0  0" xyz="0.035211 -0.000003 -0.339598"/>
       <inertia ixx="5.471" ixy="0." ixz="1.148" iyy="5.636" iyz="0." izz="0.775"/>
     </inertial>
-    <collision name="${prefix}${name}__calf_upper_collision">
+    <collision name="${name}_calf_upper_link_collision">
       <origin rpy="0  0  0" xyz="0.09732 0.0 -0.470252"/>
       <geometry>
         <box size="0.397840 0.346075 1.385496"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__calf_upper_visual">
+    <visual name="${name}_calf_upper_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/calf_upper.stl" scale="1.0 1.0 1.0"/>
@@ -143,38 +142,38 @@
     </visual>
   </link>
   <!--
-  <link name="${prefix}${name}__linkage_upper">
+  <link name="${name}__linkage_upper">
     <inertial>
       <mass value="3.754"/>
       <origin rpy="0  0  0" xyz="1.02910000e-01   0.00000000e+00   1.00000000e-05"/>
       <inertia ixx="0.028" ixy="0." ixz="0." iyy="0.022" iyz="0" izz="0.009"/>
     </inertial>
-    <collision name="${prefix}${name}__linkage_upper_collision">
+    <collision name="${name}__linkage_upper_collision">
       <origin rpy="0  0  0" xyz="1.01380000e-01   0.00000000e+00  -1.00000000e-05"/>
       <geometry>
         <box size="0.273050 0.146050 0.082518"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__linkage_upper_visual">
+    <visual name="${name}__linkage_upper_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/calf_link.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
-  <link name="${prefix}${name}__linkage_lower">
+  <link name="${name}__linkage_lower">
     <inertial>
       <mass value="3.754"/>
       <origin rpy="0  0  0" xyz="1.02910000e-01   0.00000000e+00   1.00000000e-05"/>
       <inertia ixx="0.028" ixy="0." ixz="0." iyy="0.022" iyz="0" izz="0.009"/>
     </inertial>
-    <collision name="${prefix}${name}__linkage_lower_collision">
+    <collision name="${name}__linkage_lower_collision">
       <origin rpy="0  0  0" xyz="1.01380000e-01   0.00000000e+00  -1.00000000e-05"/>
       <geometry>
         <box size="0.273050 0.146050 0.082518"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__linkage_lower_visual">
+    <visual name="${name}__linkage_lower_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/calf_link.stl" scale="1.0 1.0 1.0"/>
@@ -182,139 +181,139 @@
     </visual>
   </link>
   -->
-  <link name="${prefix}${name}__calf_lower">
+  <link name="${name}_calf_lower_link">
     <inertial>
       <mass value="18.983"/>
       <origin rpy="0  0  0" xyz="0.048200 0.000000 -0.405153"/>
       <inertia ixx="1.827" ixy="0." ixz="0.243" iyy="1.859" iyz="0." izz="0.145"/>
     </inertial>
-    <collision name="${prefix}${name}__calf_lower_collision">
+    <collision name="${name}_calf_lower_link_collision">
         <origin rpy="0  0  0" xyz="0.058576 0.000000 -0.4418265"/>
       <geometry>
         <box size="0.237352 0.180975 1.122347"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__calf_lower_visual">
+    <visual name="${name}_calf_lower_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/calf_lower.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
-  <link name="${prefix}${name}__ankle">
+  <link name="${name}_ankle_link">
     <inertial>
       <mass value="1.391"/>
       <origin rpy="0  0  0" xyz="0       0      -0.01638"/>
       <inertia ixx="0.002" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.002"/>
     </inertial>
-    <collision name="${prefix}${name}__ankle_collision">
+    <collision name="${name}_ankle_link_collision">
       <origin rpy="0  0  0" xyz="0       0      -0.019693"/>
       <geometry>
         <box size="0.073025 0.127000 0.100314"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__ankle_visual">
+    <visual name="${name}_ankle_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/ankle.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
   </link>
-  <link name="${prefix}${name}__foot">
+  <link name="${name}_foot_link">
     <inertial>
       <mass value="9.307"/>
       <origin rpy="0 0 0" xyz="0.000000 0.000000 -0.114469"/>
       <inertia ixx="0.069" ixy="0" ixz="0" iyy="0.069" iyz="0" izz="0.102"/>
     </inertial>
-    <collision name="${prefix}${name}__foot_collision">
+    <collision name="${name}_foot_link_collision">
       <origin rpy="0  0  0" xyz="0       0      -0.05495"/>
       <geometry>
         <box size="0.355474 0.355348 0.188913"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__foot_visual">
+    <visual name="${name}_foot_link_visual">
       <origin rpy="0  0  0" xyz="0  0  0"/>
       <geometry>
           <mesh filename="package://stompy_description/meshes/foot.stl" scale="1.0 1.0 1.0"/>
       </geometry>
     </visual>
 </link>
-  <gazebo reference="${prefix}${name}__foot">
+  <gazebo reference="${name}_foot_link">
     <mu1>50</mu1>
     <mu2>50</mu2>
     <maxVel>1000.0</maxVel>
     <minDepth>0.0000003</minDepth>
   </gazebo>
-  <link name="${prefix}${name}__pad">
+  <link name="${name}_pad_link">
     <inertial>
       <mass value="1"/>
       <origin rpy="0 0 0" xyz="0 0 -0.00635"/>
       <inertia ixx="0.00348" ixy="0" ixz="0" iyy="0.00348" iyz="0" izz="0.00694"/>
     </inertial>
-    <collision name="{$prefix}${name}__pad_collision">
+    <collision name="{$prefix}${name}_pad_link_collision">
       <origin rpy="0 0 0" xyz="0 0 -0.00635"/>
       <geometry>
         <cylinder length="0.0127" radius="0.1778"/>
       </geometry>
     </collision>
-    <visual name="${prefix}${name}__pad_visual">
+    <visual name="${name}__pad_link_visual">
       <origin rpy="0 0 0" xyz="0 0 -0.00635"/>
       <geometry>
         <cylinder length="0.0127" radius="0.1778"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="${prefix}${name}__pad">
+  <gazebo reference="${name}_pad_link">
     <mu1>500</mu1>
     <mu2>500</mu2>
     <maxVel>1000.0</maxVel>
     <minDepth>0.0000003</minDepth>
   </gazebo>
-  <joint name="${prefix}body_to_${name}" type="revolute">
-    <parent link="${prefix}body"/>
-    <child link="${prefix}${name}__hip"/>
+  <joint name="${name}_hip" type="revolute">
+    <parent link="body_link"/>
+    <child link="${name}_hip_link"/>
     <origin rpy="${rpy}" xyz="${xyz}"/>
     <axis xyz="0  0  1"/>
     <limit effort="${max_e}" lower="-1.178" upper="1.178" velocity="${max_v}"/>
     <dynamics damping="10000.0" />
   </joint>
   <!-- transmission added for gazebo_ros_control, needed for every joint -->
-  <transmission name="${prefix}body_to_${name}_tran">
+  <transmission name="${name}_hip_tran">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="${prefix}body_to_${name}">
+    <joint name="${name}_hip">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${prefix}body_to_${name}_motor">
+    <actuator name="${name}_hip_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <transmission name="${prefix}${name}_hip_to_thigh_tran">
+  <transmission name="${name}_thigh_tran">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="${prefix}${name}__hip_to_thigh">
+    <joint name="${name}_thigh">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${prefix}${name}_hip_to_thigh_motor">
+    <actuator name="${name}_thigh_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <transmission name="${prefix}${name}_thigh_to_calf_upper_tran">
+  <transmission name="${name}_knee_tran">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="${prefix}${name}__thigh_to_calf_upper">
+    <joint name="${name}_knee">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${prefix}${name}_thigh_to_calf_upper_motor">
+    <actuator name="${name}_knee_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <transmission name="${prefix}${name}_calf_upper_to_calf_lower_tran">
+  <transmission name="${name}_calf_tran">
     <type>transmission_interface/SimpleTransmission</type>
-    <joint name="${prefix}${name}__calf_upper_to_calf_lower">
+    <joint name="${name}_calf">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
     </joint>
-    <actuator name="${prefix}${name}_calf_upper_to_calf_lower_motor">
+    <actuator name="${name}_calf_motor">
       <hardwareInterface>EffortJointInterface</hardwareInterface>
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
