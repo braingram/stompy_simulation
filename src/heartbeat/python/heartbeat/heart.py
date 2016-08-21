@@ -15,6 +15,17 @@ class Heart(object):
         self.pub = None
         if connect:
             self.connect()
+        self._cbid = 0
+        self.callbacks = {}
+
+    def attach(self, func):
+        cbid = self._cbid
+        self.callbacks[cbid] = func
+        self._cbid += 1
+
+    def detach(self, cbid):
+        if cbid in self.callbacks:
+            del self.callbacks[cbid]
 
     def connect(self, queue_size=10):
         #rospy.init_node(self.name)
@@ -24,7 +35,8 @@ class Heart(object):
             self.topic, Heartbeat, self.receive_beat)
 
     def receive_beat(self, hb):
-        raise NotImplemented("Heart is an abstract base class")
+        for cbid in self.callbacks:
+            self.callbacks[cbid](hb)
 
     def send_beat(self):
         hb = Heartbeat()
@@ -51,6 +63,7 @@ class ClientHeart(Heart):
         if hb.source == self.master:
             self.last_heartbeat = hb
             self.send_beat()
+            super(ClientHeart, self).receive_beat(hb)
 
     def check(self):
         if self.last_heartbeat is None:
@@ -80,6 +93,7 @@ class ServerHeart(Heart):
         if hb.source == self.name:
             return
         self.clients[hb.source] = hb
+        super(ServerHeart, self).receive_beat(hb)
 
     def add_client(self, name):
         if name not in self.clients:
