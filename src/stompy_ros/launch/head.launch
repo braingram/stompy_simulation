@@ -3,7 +3,5 @@
     <param name="/heartbeat/server" value="head"/>
     <node pkg="heartbeat" type="serverheart" name="serverheart"/>
     <!-- start joystick node -->
-    <!--
     <node pkg="joy" type="joy_node" name="joy_node"/>
-    -->
 </launch>

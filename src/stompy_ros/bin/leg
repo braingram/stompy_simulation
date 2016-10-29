@@ -30,6 +30,7 @@ Connect to ros using:
 """
 
 import glob
+import os
 import socket
 import time
 
@@ -42,16 +43,23 @@ import std_msgs.msg
 
 valid_hosts = ('fr', 'fl')
 
-leg_name = socket.gethostname()  # read from hostname
+if 'LEG_NAME' in os.environ:
+    leg_name = os.environ['LEG_NAME']
+else:
+    leg_name = socket.gethostname()
 if leg_name not in valid_hosts:
     leg_name = 'fr'
     fake_teensy = True
 else:
     fake_teensy = False
+if os.environ.get('FAKE_TEENSY', False):
+    fake_teensy = True
 monitor_delay = 0.01  # seconds to wait if no bytes to read
 if fake_teensy:
+    print("Faking teensy connection...")
     send_period = 2.5  # ms between pwm updates
 else:
+    print("Using a real teensy connection")
     send_period = 0.25
 pwm_min = 256  # sets valve deadband
 pwm_max = 410  # sets valve max
@@ -222,14 +230,14 @@ def monitor_teensy():
         if fake_teensy:
             rospy.sleep(monitor_delay)
             continue
-        if conn.inwaiting:
+        if conn.inWaiting():
             msg = conn.readline()
             if len(msg) < 2 or msg[0] not in joint_codes:
                 print("invalid message: %s" % (msg, ))
                 continue
             joint = joint_codes[msg[0]]
             try:
-                value = msg[1:]
+                value = int(msg[1:])
             except ValueError:
                 print("failed to parse message: %s" % (msg, ))
             joint_sensor_pubs[joint].publish(value)
