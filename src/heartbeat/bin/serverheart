@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+
+import socket
+
+import rospy
+
+import heartbeat
+
+parameter_name = '/heartbeat/server'
+
+name = rospy.get_param(parameter_name, socket.gethostname())
+rospy.init_node("serverheart")
+s = heartbeat.ServerHeart(name)
+
+rospy.set_param(parameter_name, name)
+rospy.spin()

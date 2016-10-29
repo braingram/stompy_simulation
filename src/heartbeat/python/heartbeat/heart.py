@@ -36,7 +36,7 @@ class Heart(object):
 
     def receive_beat(self, hb):
         for cbid in self.callbacks:
-            print("calling callback: %s with %s" % (self.callbacks[cbid], hb))
+            #print("calling callback: %s with %s" % (self.callbacks[cbid], hb))
             self.callbacks[cbid](hb)
 
     def send_beat(self):
