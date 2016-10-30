@@ -32,6 +32,7 @@ Connect to ros using:
 import glob
 import os
 import socket
+import threading
 import time
 
 import serial
@@ -61,7 +62,8 @@ if fake_teensy:
 else:
     print("Using a real teensy connection")
     send_period = 0.25
-pwm_min = 256  # sets valve deadband
+#pwm_min = 256  # sets valve deadband
+pwm_min = 128  # sets valve deadband
 pwm_max = 410  # sets valve max
 joystick_min = 0.05  # sets joystick deadband
 
@@ -108,6 +110,7 @@ joint_pwm_pubs = {'hip': None, 'thigh': None, 'knee': None}
 pwms = {'hip': 0, 'thigh': 0, 'knee': 0}
 last_pwms_time = None
 conn = None
+lock = threading.Lock()
 heart = None
 
 
@@ -136,15 +139,16 @@ def publish_pwms():
 
 
 def write_pwms():
-    global pwms
-    global last_pwms_time
+    global conn, lock, pwms, last_pwms_time
     for p in pwms:
         code = reverse_joint_codes[p]
         value = pwms[p]
         if fake_teensy:
             print("%s%i" % (code, value))
         else:
+            lock.acquire()
             conn.write('%s%i\n' % (code, value))
+            lock.release()
     last_pwms_time = time.time()
 
 
@@ -158,11 +162,11 @@ def zero_pwms(write=False):
 def new_joy(data):
     # check for 'deadman', if not pressed, send 0 pwms
     global pwms
-    if data.buttons[0] == 0:
+    if data.buttons[1] == 0:
         print("Deadman is open!")
         zero_pwms()
     # check for 'me' button or no buttons
-    elif any(data.buttons[1:]) and data.buttons[button_index] == 0:
+    elif any(data.buttons[2:]) and data.buttons[button_index] == 0:
         print(
             "Other button[%s] is pressed, doing nothing"
             % (data.buttons[1:], ))
@@ -215,7 +219,7 @@ def connect_to_ros():
 
 def monitor_teensy():
     # monitor teensy, publish new pot messages when received
-    global last_pwms_time, heart
+    global last_pwms_time, heart, conn, lock
     last_pwms_time = time.time()
     # TODO wait for first heartbeat
     while not rospy.is_shutdown():
@@ -230,8 +234,10 @@ def monitor_teensy():
         if fake_teensy:
             rospy.sleep(monitor_delay)
             continue
+        lock.acquire()
         if conn.inWaiting():
             msg = conn.readline()
+            lock.release()
             if len(msg) < 2 or msg[0] not in joint_codes:
                 print("invalid message: %s" % (msg, ))
                 continue
@@ -242,6 +248,7 @@ def monitor_teensy():
                 print("failed to parse message: %s" % (msg, ))
             joint_sensor_pubs[joint].publish(value)
         else:
+            lock.release()
             rospy.sleep(monitor_delay)
 
 
