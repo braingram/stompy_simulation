@@ -42,7 +42,7 @@ import rospy
 import sensor_msgs.msg
 import std_msgs.msg
 
-valid_hosts = ('fr', 'fl')
+valid_hosts = ('fr', 'fl', 'mr', 'ml', 'rr', 'rl')
 
 if 'LEG_NAME' in os.environ:
     leg_name = os.environ['LEG_NAME']
@@ -71,11 +71,19 @@ joystick_min = 0.05  # sets joystick deadband
 button_indices = {
     'fr': 4,
     'fl': 5,
+    'mr': 6,
+    'ml': 7,
+    'rr': 8,
+    'rl': 9,
 }
 button_index = button_indices[leg_name]
 hip_flips = {
     'fr': 1,
     'fl': -1,
+    'mr': 1,
+    'ml': -1,
+    'rr': 1,
+    'rl': -1,
 }
 axis_map = {
     'hip': {
@@ -103,8 +111,11 @@ axis_map = {
 
 
 joint_codes = {'H': 'hip', 'T': 'thigh', 'K': 'knee', 'C': 'calf'}
+current_codes = {'h': 'hip', 't': 'thigh', 'k': 'knee'}
 reverse_joint_codes = {joint_codes[k]: k for k in joint_codes}
+reverse_current_codes = {current_codes[k]: k for k in current_codes}
 
+joint_current_pubs = {'hip': None, 'thigh': None, 'knee': None}
 joint_sensor_pubs = {'hip': None, 'thigh': None, 'knee': None, 'calf': None}
 joint_pwm_pubs = {'hip': None, 'thigh': None, 'knee': None}
 pwms = {'hip': 0, 'thigh': 0, 'knee': 0}
@@ -118,7 +129,7 @@ def calculate_pwms(axes):
     global pwms
     for j in axis_map:
         m = axis_map[j]
-        a = axes[m['axis']]
+        a = axes[m['axis']] * m.get('flip', 1)
         # if joystick is in it's deadband, do nothing
         if abs(a) < m['jmin']:
             pwms[j] = 0.
@@ -211,6 +222,10 @@ def connect_to_ros():
         joint_sensor_pubs[j] = rospy.Publisher(
             '/%s/sensors/%s' % (leg_name, j), std_msgs.msg.Int32,
             queue_size=16)
+    for j in joint_current_pubs:
+        joint_current_pubs[j] = rospy.Publisher(
+            '/%s/current/%s' % (leg_name, j), std_msgs.msg.Int32,
+            queue_size=16)
     for j in joint_pwm_pubs:
         joint_pwm_pubs[j] = rospy.Publisher(
             '/%s/pwms/%s' % (leg_name, j), std_msgs.msg.Int32,
@@ -238,15 +253,26 @@ def monitor_teensy():
         if conn.inWaiting():
             msg = conn.readline()
             lock.release()
-            if len(msg) < 2 or msg[0] not in joint_codes:
+            if len(msg) < 2:
                 print("invalid message: %s" % (msg, ))
                 continue
-            joint = joint_codes[msg[0]]
-            try:
-                value = int(msg[1:])
-            except ValueError:
-                print("failed to parse message: %s" % (msg, ))
-            joint_sensor_pubs[joint].publish(value)
+            if msg[0] in joint_codes:
+                joint = joint_codes[msg[0]]
+                try:
+                    value = int(msg[1:])
+                except ValueError:
+                    print("failed to parse message: %s" % (msg, ))
+                joint_sensor_pubs[joint].publish(value)
+            elif msg[0] in current_codes:
+                joint = current_codes[msg[0]]
+                try:
+                    value = int(msg[1:])
+                except ValueError:
+                    print("failed to parse message: %s" % (msg, ))
+                joint_current_pubs[joint].publish(value)
+            else:
+                print("invalid messge: %s" % (msg, ))
+                continue
         else:
             lock.release()
             rospy.sleep(monitor_delay)
