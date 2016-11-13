@@ -65,7 +65,8 @@ else:
 #pwm_min = 256  # sets valve deadband
 #pwm_min = 128  # sets valve deadband
 pwm_min = 0
-pwm_max = 410  # sets valve max
+#pwm_max = 410  # sets valve max
+pwm_max = 26240  # sets valve max
 joystick_min = 0.05  # sets joystick deadband
 
 # index of button that should be pressed when issuing commands to just this leg
