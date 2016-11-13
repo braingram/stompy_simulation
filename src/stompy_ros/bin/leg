@@ -63,7 +63,8 @@ else:
     print("Using a real teensy connection")
     send_period = 0.25
 #pwm_min = 256  # sets valve deadband
-pwm_min = 128  # sets valve deadband
+#pwm_min = 128  # sets valve deadband
+pwm_min = 0
 pwm_max = 410  # sets valve max
 joystick_min = 0.05  # sets joystick deadband
 
@@ -112,11 +113,13 @@ axis_map = {
 
 joint_codes = {'H': 'hip', 'T': 'thigh', 'K': 'knee', 'C': 'calf'}
 current_codes = {'h': 'hip', 't': 'thigh', 'k': 'knee'}
+system_codes = {'V': 'voltage'}
 reverse_joint_codes = {joint_codes[k]: k for k in joint_codes}
 reverse_current_codes = {current_codes[k]: k for k in current_codes}
 
 joint_current_pubs = {'hip': None, 'thigh': None, 'knee': None}
 joint_sensor_pubs = {'hip': None, 'thigh': None, 'knee': None, 'calf': None}
+system_pubs = {'voltage': None}
 joint_pwm_pubs = {'hip': None, 'thigh': None, 'knee': None}
 pwms = {'hip': 0, 'thigh': 0, 'knee': 0}
 last_pwms_time = None
@@ -230,6 +233,10 @@ def connect_to_ros():
         joint_pwm_pubs[j] = rospy.Publisher(
             '/%s/pwms/%s' % (leg_name, j), std_msgs.msg.Int32,
             queue_size=16)
+    for k in system_pubs:
+        system_pubs[k] = rospy.Publisher(
+            '/%s/system/%s' % (leg_name, k), std_msgs.msg.Int32,
+            queue_size=16)
 
 
 def monitor_teensy():
@@ -270,6 +277,13 @@ def monitor_teensy():
                 except ValueError:
                     print("failed to parse message: %s" % (msg, ))
                 joint_current_pubs[joint].publish(value)
+            elif msg[0] in system_codes:
+                k = system_codes[msg[0]]
+                try:
+                    value = int(msg[1:])
+                except ValueError:
+                    print("failed to parse message: %s" % (msg, ))
+                system_pubs[k].publish(value)
             else:
                 print("invalid messge: %s" % (msg, ))
                 continue
