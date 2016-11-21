@@ -43,7 +43,7 @@
     </visual>
   </link>
 
-  <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0" xyz="2.35117  0.5842   1.2"/>
+  <xacro:leg name="fr" rpy="0 0 -0.9599" xyz="2.2352 -0.5842   -0.1000"/>
   <!--
   <xacro:leg prefix="stompy__" name="fl" rpy="0 0 0.7853" xyz="2.35117  0.5842   1.2"/>
   <xacro:leg name="fr" rpy="0      0     -0.7853" xyz="2.35117 -0.5842   1"/>
