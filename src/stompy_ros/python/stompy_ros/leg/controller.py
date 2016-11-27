@@ -35,6 +35,7 @@ from . import plans
 class PointSender(object):
     def __init__(self):
         self.points = []
+        self._lock = threading.Lock()
         self._pid = 0
         self.gen = None
 
@@ -45,23 +46,27 @@ class PointSender(object):
         return iter(self.points)
 
     def next_pid(self):
-        if len(self.points) != 0:
-            self._pid = max([p.pid for p in self.points])
+        #if len(self.points) != 0:
+        #    self._pid = max([p.pid for p in self.points])
         self._pid += 1
         return self._pid
 
     def drop(self, pids=None):
         if pids is None:  # if none, drop all
+            self._lock.acquire()
             self.points = []
+            self._lock.release()
             return
         if len(pids) == 0:
             return
         indices = []
+        self._lock.acquire()
         for (i, p) in enumerate(self.points):
             if p.pid in pids:
                 indices.append(i)
         for i in indices[::-1]:
-            indices.pop(i)
+            self.points.pop(i)
+        self._lock.release()
 
     def drop_later(self, time):
         pids = []
@@ -80,6 +85,8 @@ class PointSender(object):
         self.drop(pids)
 
     def send_point(self, p):
+        if p.pid > self._pid:
+            self._pid = p.pid
         self.points.append(p)
         # actually end point as trajectory
         msg = control_msgs.msg.FollowJointTrajectoryGoal()
@@ -101,10 +108,12 @@ class PointSender(object):
             return
         if ts is None:
             ts = rospy.Time.now()
+        self._lock.acquire()
         if len(self.points) == 0:
             self.send_point(self.gen.next())
         while self.points[-1].time - ts < rospy.Duration(1.):
             self.send_point(self.gen.next())
+        self._lock.release()
         self.drop_past()
 
 
@@ -152,6 +161,7 @@ class LegController(object):
         # TODO handle severity
         self._trajectory_publisher.cancel_goal()
         # TODO send 0 move
+        self.points.drop()
 
     def set_plan(self, plan):
         self.previous_plan = self.plan

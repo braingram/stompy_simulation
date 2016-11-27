@@ -131,4 +131,5 @@ class LegNode(object):
         self.publishers['estop'].publish(msg)
 
     def update(self):
+        # TODO check heart
         self.controller.update()
