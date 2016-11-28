@@ -38,12 +38,28 @@ class PointSender(object):
         self._lock = threading.Lock()
         self._pid = 0
         self.gen = None
+        self._position = None
 
     def __len__(self):
         return len(self.points)
 
     def __iter__(self):
         return iter(self.points)
+
+    def find_position(self, time=None):
+        if time is None:
+            time = rospy.Time.now()
+        dt = rospy.Duration(1000)
+        ps = None
+        for p in self.points:
+            # look for point just before this time
+            pdt = time - p.time
+            if pdt > rospy.Duration(0) and pdt < dt:
+                dt = pdt
+                ps = p.position
+        if ps is None:
+            return self._position, None
+        return ps, dt
 
     def next_pid(self):
         #if len(self.points) != 0:
@@ -79,12 +95,18 @@ class PointSender(object):
         if time is None:
             time = rospy.Time.now()
         pids = []
+        dt = rospy.Duration(1000)
         for p in self.points:
             if p.time < time:
                 pids.append(p.pid)
+                pdt = time - p.time
+                if pdt > rospy.Duration(0) and pdt < dt:
+                    dt = pdt
+                    self._position = p.position
         self.drop(pids)
 
     def send_point(self, p):
+        # TODO check limits
         if p.pid > self._pid:
             self._pid = p.pid
         self.points.append(p)
@@ -172,20 +194,36 @@ class LegController(object):
             self.points.drop()
             return
         # setup new transform
+        # TODO look up start time and position by finding
+        # soonest point after start_time
+        if self.plan.start_time is None:
+            self.plan.start_time = rospy.Time.now() + rospy.Duration(0.1)
+            print("Timstamping plan: %s" % self.plan.start_time)
         self.points.gen = self.plan.point_generator(
-            self.get_position(self.plan.frame), self.plan.start_time,
+            self.get_position(self.plan.frame, self.plan.start_time),
+            self.plan.start_time,
             self.points.next_pid(), kinematics.frames.JOINT_FRAME)
         self.points.drop_later(self.plan.start_time)
         self.points.update()
 
     def get_position(self, frame=None, time=None):
-        if time is None:
-            time = rospy.Time.now()
         if frame is None:
             frame = kinematics.frames.JOINT_FRAME
-        state = self._query_state(time)
-        joints = dict(zip(state.name, state.position))
-        jpt = [joints[jn] for jn in self._joint_names]
+        try:
+            if (
+                    time is None or
+                    time < (rospy.Time.now() + rospy.Duration(0.05))):
+                state = self._query_state(rospy.Time.now())
+            else:
+                state = self._query_state(time)
+            joints = dict(zip(state.name, state.position))
+            jpt = [joints[jn] for jn in self._joint_names]
+        except rospy.ServiceException:
+            print("failed to query state: %s" % time)
+            ps, dt = self.points.find_position(time)
+            if ps is None:
+                raise NotImplementedError()
+            jpt = ps
         return kinematics.frames.convert(
             jpt, kinematics.frames.JOINT_FRAME, frame)
 

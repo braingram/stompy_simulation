@@ -9,13 +9,28 @@ import rospy
 from .. import kinematics
 from .. import transforms
 
+import stompy_msgs.msg
+
 
 STOP_MODE = 0
 VELOCITY_MODE = 1  # move along vector lx, ly, lz,
 ARC_MODE = 2  # rotate angular about point linear
 #TARGET_MODE = 3  # move to lx, ly, lz
 
-modes = [STOP_MODE, VELOCITY_MODE, ARC_MODE]
+mode_names = {
+    'stop': STOP_MODE,
+    'velocity': VELOCITY_MODE,
+    'arc': ARC_MODE,
+}
+modes = mode_names.values()
+
+
+def lookup_mode(mode):
+    if mode in modes:
+        return mode
+    if mode in mode_names:
+        return mode_names[mode]
+    raise ValueError("Unknown mode: %s" % mode)
 
 
 class Waypoint(object):
@@ -50,7 +65,9 @@ class Plan(object):
             in_frame = self.frame
         t = self.to_transform()
         x, y, z = start
+        # TODO make configurable
         dt = rospy.Duration(0.1)
+        # TODO check limits
         while True:
             x, y, z = transforms.transform_3d(t, x, y, z)
             time += dt
@@ -75,12 +92,41 @@ def resolve_target(target, mode):
 
 
 def from_message(msg):
-    mode = msg.mode
-    frame = msg.frame
+    mode = msg.mode.data
+    frame = msg.frame.data
     target = resolve_target(msg.target, mode)
     start_time = (
-        rospy.Time.now() if msg.start_time.is_zero()
-        else msg.start_time)
-    speed = None if msg.speed == 0. else msg.speed
+        None if msg.start_time.data.is_zero()
+        else msg.start_time.data)
+    speed = None if msg.speed.data == 0. else msg.speed.data
     return Plan(
         mode, frame, target, start_time, speed)
+
+
+def make_message(mode, frame, target, start_time=0, speed=0):
+    msg = stompy_msgs.msg.LegPlan()
+    msg.mode.data = lookup_mode(mode)
+    msg.frame.data = kinematics.frames.lookup_frame(frame)
+    if mode == STOP_MODE:
+        pass
+    elif mode == VELOCITY_MODE:
+        msg.target.linear.x = target[0]
+        msg.target.linear.y = target[1]
+        msg.target.linear.z = target[2]
+    elif mode == ARC_MODE:
+        msg.target.linear.x = target[0]
+        msg.target.linear.y = target[1]
+        msg.target.linear.z = target[2]
+        msg.target.angular.x = target[3]
+        msg.target.angular.y = target[4]
+        msg.target.angular.z = target[5]
+    if not isinstance(start_time, rospy.rostime.Time):
+        start_time = rospy.Time(start_time)
+    msg.start_time.data = start_time
+    msg.speed.data = speed
+    return msg
+
+
+def make_stop_message(start_time=0):
+    return make_message(
+        STOP_MODE, kinematics.frames.JOINT_FRAME, None, start_time=start_time)

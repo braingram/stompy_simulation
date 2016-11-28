@@ -9,7 +9,21 @@ JOINT_FRAME = 1
 LEG_FRAME = 2
 BODY_FRAME = 3
 
-frames = [SENSOR_FRAME, JOINT_FRAME, LEG_FRAME, BODY_FRAME]
+frame_names = {
+    'sensor': SENSOR_FRAME,
+    'joint': JOINT_FRAME,
+    'leg': LEG_FRAME,
+    'body': BODY_FRAME,
+}
+frames = frame_names.values()
+
+
+def lookup_frame(frame):
+    if frame in frames:
+        return frame
+    if frame in frame_names:
+        return frame_names[frame]
+    raise ValueError("Unknown frame: %s" % frame)
 
 
 def convert_pts(pts, from_frame, to_frame):

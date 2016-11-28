@@ -25,8 +25,9 @@ import sensor_msgs.msg
 import std_msgs.msg
 
 from heartbeat import ClientHeart
-from stompy_ros.msg import LegPlan
+from stompy_msgs.msg import LegPlan
 
+from . import controller
 from .. import kinematics
 from . import plans
 
@@ -133,3 +134,21 @@ class LegNode(object):
     def update(self):
         # TODO check heart
         self.controller.update()
+
+    def run(self, dt=None):
+        if dt is None:
+            dt = 0.1
+        while not rospy.is_shutdown():
+            self.update()
+            rospy.sleep(dt)
+
+
+def start_node(leg_name, run=True):
+    rospy.init_node(leg_name)
+    kinematics.body.set_leg(leg_name)
+    lc = controller.LegController(leg_name)
+    ln = LegNode(leg_name, lc)
+    if run:
+        ln.run()
+    else:
+        return ln

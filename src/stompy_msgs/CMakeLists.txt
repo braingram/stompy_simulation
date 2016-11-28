@@ -1,13 +1,12 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(stompy_ros)
+project(stompy_msgs)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  heartbeat
-  rospy
-  stompy_msgs
+#  heartbeat
+#  rospy
   sensor_msgs
   geometry_msgs
   std_msgs
@@ -21,7 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-catkin_python_setup()
+#catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -71,7 +70,7 @@ add_message_files(
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-   DEPENDENCIES std_msgs geometry_msgs sensor_msgs stompy_msgs
+   DEPENDENCIES std_msgs geometry_msgs
 #   sensor_msgs#   std_msgs
 )
 
@@ -106,8 +105,9 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES stompy_ros
-  CATKIN_DEPENDS heartbeat rospy stompy_msgs sensor_msgs std_msgs geometry_msgs message_runtime
+#  LIBRARIES stompy_msgs
+#  CATKIN_DEPENDS heartbeat rospy sensor_msgs std_msgs geometry_msgs message_runtime
+  CATKIN_DEPENDS sensor_msgs std_msgs geometry_msgs message_runtime
 #  DEPENDS system_lib
 )
 
@@ -123,24 +123,24 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(stompy_ros
-#   src/${PROJECT_NAME}/stompy_ros.cpp
+# add_library(stompy_msgs
+#   src/${PROJECT_NAME}/stompy_msgs.cpp
 # )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(stompy_ros ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(stompy_msgs ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(stompy_ros_node src/stompy_ros_node.cpp)
+# add_executable(stompy_msgs_node src/stompy_msgs_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(stompy_ros_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(stompy_msgs_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(stompy_ros_node
+# target_link_libraries(stompy_msgs_node
 #   ${catkin_LIBRARIES}
 # )
 
@@ -148,8 +148,8 @@ include_directories(
 ## Install ##
 #############
 
-catkin_install_python(PROGRAMS bin/leg
-    DESTINATION $(CATKIN_PACKAGE_BIN_DESTINATION))
+#catkin_install_python(PROGRAMS bin/leg
+#    DESTINATION $(CATKIN_PACKAGE_BIN_DESTINATION))
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
@@ -161,7 +161,7 @@ catkin_install_python(PROGRAMS bin/leg
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS stompy_ros stompy_ros_node
+# install(TARGETS stompy_msgs stompy_msgs_node
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -186,7 +186,7 @@ catkin_install_python(PROGRAMS bin/leg
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_stompy_ros.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_stompy_msgs.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
