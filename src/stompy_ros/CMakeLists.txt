@@ -148,7 +148,7 @@ include_directories(
 ## Install ##
 #############
 
-catkin_install_python(PROGRAMS bin/leg
+catkin_install_python(PROGRAMS bin/leg bin/fake_joystick.py
     DESTINATION $(CATKIN_PACKAGE_BIN_DESTINATION))
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
