@@ -258,6 +258,7 @@ class MoveBody(Mode):
 
 class PositionLegs(Mode):
     mode = POSITION_LEGS
+    # TODO lift legs, move to centers, place down
 
 
 class Restriction(Mode):

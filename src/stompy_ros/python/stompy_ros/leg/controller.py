@@ -39,12 +39,23 @@ class PointSender(object):
         self._pid = 0
         self.gen = None
         self._position = None
+        self.plan = None
 
     def __len__(self):
         return len(self.points)
 
     def __iter__(self):
         return iter(self.points)
+
+    def find_next_point(self, time=None, min_dt=0.2):
+        min_dt = rospy.Duration(min_dt)
+        if time is None:
+            time = rospy.Time.now()
+        for p in self.points:
+            pdt = p.time - time
+            if pdt >= min_dt:
+                return p
+        return None
 
     def find_position(self, time=None):
         if time is None:
@@ -106,6 +117,36 @@ class PointSender(object):
         self.drop(pids)
 
     def send_point(self, p):
+        if p.pid > self._pid:
+            self._pid = p.pid
+        self._to_send.append(p)
+
+    def flush(self):
+        # TODO
+        if len(self._to_send) == 0:
+            return
+        msg = control_msgs.msg.FollowJointTrajectoryGoal()
+        for jn in self._joint_names:
+            msg.trajectory.joint_names.append(jn)
+        st = None
+        to_remove = []
+        now = rospy.Time.now()
+        for (i, p) in enumerate(self._to_send):
+            if p.time < now:
+                to_remove.append(i)
+            else:
+                pt = trajectory_msgs.msg.JointTrajectoryPoint()
+        pt1 = trajectory_msgs.msg.JointTrajectoryPoint()
+        pt.time_from_start = rospy.Duration(0.)
+        pt1.time_from_start = rospy.Duration(0.5)
+        pt.positions = p.position
+        pt1.positions = p.position
+        msg.trajectory.points.append(pt)
+        msg.trajectory.points.append(pt1)
+        msg.trajectory.header.stamp = p.time
+        self._trajectory_publisher.send_goal(msg)
+
+    def _old_send_point(self, p):
         # TODO check limits
         if p.pid > self._pid:
             self._pid = p.pid
@@ -126,6 +167,10 @@ class PointSender(object):
         self._trajectory_publisher.send_goal(msg)
 
     def update(self, ts=None):
+        # check that last sent point is at least N seconds in the future
+        # if so, do nothing
+        # if not, send M seconds worth of points (as a trajectory) starting
+        # at the last point
         if self.gen is None:
             return
         if ts is None:
@@ -135,6 +180,7 @@ class PointSender(object):
             self.send_point(self.gen.next())
         while self.points[-1].time - ts < rospy.Duration(1.):
             self.send_point(self.gen.next())
+        self.flush()
         self._lock.release()
         self.drop_past()
 

@@ -60,13 +60,12 @@ class Plan(object):
         else:
             raise ValueError("Unknown mode: %s" % self.mode)
 
-    def point_generator(self, start, time, pid=0, in_frame=None):
+    def point_generator(self, start, time, pid=0, in_frame=None, dt=0.1):
         if in_frame is None:
             in_frame = self.frame
         t = self.to_transform()
         x, y, z = start
-        # TODO make configurable
-        dt = rospy.Duration(0.1)
+        dt = rospy.Duration(dt)
         # TODO check limits
         while True:
             x, y, z = transforms.transform_3d(t, x, y, z)
