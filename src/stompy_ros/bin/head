@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import stompy_ros.head.node
+
+
+stompy_ros.head.node.start_node(run=True)

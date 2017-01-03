@@ -55,6 +55,10 @@ def identity_3d():
     return numpy.matrix(numpy.identity(4, dtype='f8'))
 
 
+def is_stop_3d(t, threshold=0.0001):
+    return numpy.max(numpy.abs(t - identity_3d())) < threshold
+
+
 def translation_3d(x, y, z):
     return numpy.matrix([
         [1.0, 0., 0., x],
@@ -121,7 +125,7 @@ def rotation_about_point_3d(x, y, z, xa, ya, za, degrees=False):
 
 
 def transform_3d(m, x, y, z):
-    r = m * [[x], [y], [z], [1.]]
+    r = numpy.matrix(m) * [[x], [y], [z], [1.]]
     return float(r[0]), float(r[1]), float(r[2])
 
 

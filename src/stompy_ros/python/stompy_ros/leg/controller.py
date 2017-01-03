@@ -40,6 +40,7 @@ class PointSender(object):
         self.gen = None
         self._position = None
         self.plan = None
+        #self._to_send = []
 
     def __len__(self):
         return len(self.points)
@@ -116,7 +117,7 @@ class PointSender(object):
                     self._position = p.position
         self.drop(pids)
 
-    def send_point(self, p):
+    def _new_send_point(self, p):
         if p.pid > self._pid:
             self._pid = p.pid
         self._to_send.append(p)
@@ -146,7 +147,7 @@ class PointSender(object):
         msg.trajectory.header.stamp = p.time
         self._trajectory_publisher.send_goal(msg)
 
-    def _old_send_point(self, p):
+    def send_point(self, p):
         # TODO check limits
         if p.pid > self._pid:
             self._pid = p.pid
@@ -180,7 +181,7 @@ class PointSender(object):
             self.send_point(self.gen.next())
         while self.points[-1].time - ts < rospy.Duration(1.):
             self.send_point(self.gen.next())
-        self.flush()
+        #self.flush()
         self._lock.release()
         self.drop_past()
 

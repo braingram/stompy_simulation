@@ -40,6 +40,7 @@ class HeadNode(object):
             pass
 
     def new_joystick(self, msg):
+        # TODO throttle
         # TODO check deadman
         new_mode = self.mode.check_mode(msg)
         if new_mode is not None:  # change mode
@@ -52,7 +53,7 @@ class HeadNode(object):
 
     def send_plans(self, plans):
         for leg_name in plans:
-            #print("sending to %s: %s" % (leg_name, plans[leg_name]))
+            print("sending to %s: %s" % (leg_name, plans[leg_name]))
             self.leg_plans[leg_name].publish(plans[leg_name])
 
     def update(self):
@@ -67,8 +68,11 @@ class HeadNode(object):
         if dt is None:
             dt = 0.1
         while not rospy.is_shutdown():
-            self.update()
-            rospy.sleep(dt)
+            try:
+                self.update()
+                rospy.sleep(dt)
+            except rospy.ROSInterruptException:
+                break
 
 
 def start_node(run=True):

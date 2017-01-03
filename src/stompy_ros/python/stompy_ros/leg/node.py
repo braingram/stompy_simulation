@@ -27,7 +27,8 @@ import std_msgs.msg
 from heartbeat import ClientHeart
 from stompy_msgs.msg import LegPlan
 
-from . import controller
+#from . import controller
+from . import sim
 from .. import kinematics
 from . import plans
 
@@ -50,7 +51,7 @@ class LegNode(object):
         self.heart = ClientHeart(self.name, 'head')
         # connect to subscribers, setup callbacks
         rospy.Subscriber('/stompy/estop', std_msgs.msg.Byte, self.new_estop)
-        rospy.Subscriber('/stompy/%s/plan' % self.name, LegPlan, self.new_plan)
+        rospy.Subscriber('/stompy/%s/plan' % self.name, LegPlan, self.add_plan)
 
         # connect to publishers
         self.publishers = {
@@ -82,8 +83,14 @@ class LegNode(object):
     def new_estop(self, msg):
         self.controller.halt(msg.data)
 
-    def new_plan(self, msg):
-        self.controller.set_plan(plans.from_message(msg))
+    def add_plan(self, msg):
+        plan = plans.from_message(msg)
+        if plan.start_time is None:
+            plan.start_time = rospy.Time.now().to_sec()
+        if hasattr(plan.start_time, 'to_sec'):
+            plan.start_time = plan.start_time.to_sec()
+        print("New plan: %s" % plan)
+        self.controller.add_plan(plan)
 
     # --- outputs ---
     def send_joint_states(self, joints, time):
@@ -139,14 +146,18 @@ class LegNode(object):
         if dt is None:
             dt = 0.1
         while not rospy.is_shutdown():
-            self.update()
-            rospy.sleep(dt)
+            try:
+                self.update()
+                rospy.sleep(dt)
+            except rospy.ROSInterruptException:
+                break
 
 
 def start_node(leg_name, run=True):
     rospy.init_node(leg_name)
     kinematics.body.set_leg(leg_name)
-    lc = controller.LegController(leg_name)
+    lc = sim.SimLeg(leg_name)
+    #lc = controller.LegController(leg_name)
     ln = LegNode(leg_name, lc)
     if run:
         ln.run()

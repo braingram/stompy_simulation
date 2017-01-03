@@ -57,12 +57,12 @@ IDLE = 0
 MOVE_LEG = 1
 
 leg_buttons = {
-    4: 'fl',
+    4: 'rl',
     5: 'ml',
-    6: 'rl',
-    7: 'rr',
+    6: 'fl',
+    7: 'fr',
     8: 'mr',
-    9: 'fr',
+    9: 'rr',
 }
 
 # body modes
@@ -149,9 +149,9 @@ class MoveLeg(Mode):
 
     def __init__(self, msg):
         # TODO get move parameters from server
-        self.scale_angles = 1 / 25.
-        self.scale_legs = 1 / 50.
-        self.scale_body = 1 / 50.
+        self.scale_angles = 1 / 100.
+        self.scale_legs = 1 / 200.
+        self.scale_body = 1 / 200.
         inds = get_pressed_button_indices(msg.buttons)
         self.leg = None
         for i in inds:
@@ -166,11 +166,13 @@ class MoveLeg(Mode):
         # check if changing leg or angles
         inds = get_pressed_button_indices(msg.buttons)
         new_leg = None
+        # TODO check for press, then release
         for i in inds:
             if i in leg_buttons:
                 new_leg = leg_buttons[i]
         plans = {}
         if new_leg is not None:
+            plans[self.leg] = leg.plans.make_stop_message(frame=self.frame)
             if new_leg == self.leg:
                 if self.frame == 'body':
                     self.frame = 'leg'
@@ -180,8 +182,10 @@ class MoveLeg(Mode):
                     self.frame = 'body'
             else:
                 self.frame = 'body'
-                plans[self.leg] = leg.plans.make_stop_message()
+                #plans[self.leg] = leg.plans.make_stop_message()
                 self.leg = new_leg
+            # TODO reprocess this input next update or just ignore it?
+            return plans
         # compute new plan
         # check if axes '0'
         # compute velocity from axes
@@ -213,8 +217,8 @@ class MoveBody(Mode):
 
     def __init__(self, msg):
         # TODO get move parameters from server
-        self.scale_translate = 1 / 50.
-        self.scale_rotate = 1 / 25.
+        self.scale_translate = 1 / 200.
+        self.scale_rotate = 1 / 100.
         inds = get_pressed_button_indices(msg.buttons)
         self.translate = None
         for i in inds:

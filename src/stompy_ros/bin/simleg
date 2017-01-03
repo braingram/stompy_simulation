@@ -1,0 +1,20 @@
+#!/usr/bin/env python
+
+import socket
+import sys
+
+import stompy_ros.info
+import stompy_ros.leg.node
+
+
+args = sys.argv[1:]
+
+leg_name = None
+if len(args):
+    leg_name = args[0]
+if leg_name is None:
+    leg_name = socket.gethostname()
+if leg_name not in stompy_ros.info.legs:
+    raise ValueError("Invalid leg: %s" % leg_name)
+
+stompy_ros.leg.node.start_node(leg_name, run=True)

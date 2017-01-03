@@ -1,0 +1,18 @@
+<launch>
+    <include file="$(find stompy_gazebo)/launch/stompy_control.launch" />
+    <!-- real joystick -->
+    <!-- <node name="joy_node" pkg="joy" type="joy_node" /> -->
+    <!-- fake joystick -->
+    <node name="fake_joystick" pkg="stompy_ros" type="fake_joystick.py" />
+
+    <!-- legs -->
+    <node name="fr" pkg="stompy_ros" type="simleg" args="fr" />
+    <node name="mr" pkg="stompy_ros" type="simleg" args="mr" />
+    <node name="rr" pkg="stompy_ros" type="simleg" args="rr" />
+    <node name="fl" pkg="stompy_ros" type="simleg" args="fl" />
+    <node name="ml" pkg="stompy_ros" type="simleg" args="ml" />
+    <node name="rl" pkg="stompy_ros" type="simleg" args="rl" />
+
+    <!-- head -->
+    <node name="head" pkg="stompy_ros" type="head" />
+</launch>
