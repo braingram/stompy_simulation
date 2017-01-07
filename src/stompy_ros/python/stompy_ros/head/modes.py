@@ -34,10 +34,13 @@ button-mode
     13: restriction
 """
 
+import rospy
+
 from .. import info
 from .. import kinematics
 from .. import leg
 from . import legs
+from . import restriction
 
 
 # foot/leg modes
@@ -223,8 +226,8 @@ class MoveBody(Mode):
 
     def __init__(self, msg=None):
         # TODO get move parameters from server
-        self.scale_translate = 1 / 200.
-        self.scale_rotate = 1 / 100.
+        self.scale_translate = 1 / 500.
+        self.scale_rotate = 1 / 500.
         if msg is None:
             self.translate = True
         else:
@@ -387,6 +390,170 @@ class PositionLegs(Mode):
 
 class Restriction(Mode):
     mode = RESTRICTION
+
+    def __init__(self, msg=None):
+        self.rc = restriction.RestrictionControl()
+        self.step_size = 0.5
+        self.half_step_size = self.step_size / 2.
+        self.lift_velocity = 0.003
+        self.lower_velocity = 0.002
+        self.swing_velocity = 0.003
+        self.rc.compute_foot_restrictions(self.get_foot_positions())
+
+        for foot_name in self.rc.feet:
+            self.rc.feet[foot_name].stance_target = (0, 0)
+            self.rc.feet[foot_name].swing_target = \
+                self.rc.feet[foot_name].center
+            self.rc.feet[foot_name].swing_distance = None
+
+        #if msg is not None:
+        #    # TODO process initial joystick message
+        #    self.update_targets(msg)
+
+    def update_targets(self, msg):
+        tx = msg.axes[0] / 1000.
+        ty = msg.axes[1] / 1000.
+        for foot_name in self.rc.feet:
+            foot = self.rc.feet[foot_name]
+            foot.stance_target = (-tx, -ty)
+            cx, cy = foot.center
+            tl = ((tx * tx) + (ty * ty)) ** 0.5
+            if tl == 0.:
+                foot.swing_target = (cx, cy)
+            else:
+                ntx, nty = tx / tl, ty / tl
+                foot.swing_target = (
+                    cx + ntx * self.half_step_size,
+                    cy + nty * self.half_step_size)
+        return self.update_plans()
+
+    def update_plans(self, feet=None):
+        if feet is None:
+            feet = self.rc.feet
+        plans = {}
+        for foot_name in feet:
+            foot = self.rc.feet[foot_name]
+            # send plans
+            if foot.state in ('stance', 'wait'):
+                # TODO arc
+                dx, dy = foot.stance_target
+                plans[foot_name] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE,
+                    kinematics.frames.BODY_FRAME,
+                    (dx, dy, 0.))
+            elif foot.state == 'lift':
+                dx, dy = foot.stance_target
+                plans[foot_name] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE,
+                    kinematics.frames.BODY_FRAME,
+                    (dx, dy, self.lift_velocity))
+                foot.swing_distance = None
+            elif foot.state == 'lower':
+                dx, dy = foot.stance_target
+                plans[foot_name] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE,
+                    kinematics.frames.BODY_FRAME,
+                    (dx, dy, -self.lower_velocity))
+            elif foot.state == 'swing':
+                leg_state = legs.legs[foot_name]
+                x = leg_state['x']
+                y = leg_state['y']
+                tx, ty = foot.swing_target
+                dx = tx - x
+                dy = ty - y
+                d = (dx * dx + dy * dy) ** 0.5
+                sx = dx / d * self.swing_velocity
+                sy = dy / d * self.swing_velocity
+                if foot.swing_distance is None:
+                    foot.swing_distance = d
+                else:
+                    foot.swing_distance = min(d, foot.swing_distance)
+                plans[foot_name] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE,
+                    kinematics.frames.BODY_FRAME,
+                    (sx, sy, 0.))
+        return plans
+
+    def get_foot_positions(self):
+        fps = {}
+        for leg_name in legs.legs:
+            foot = legs.legs[leg_name]
+            fps[leg_name] = [foot['x'], foot['y']]
+        return fps
+
+    def update(self):
+        print("Time: %s" % rospy.Time.now().to_sec())
+        new_mode = None
+        plans = {}
+        requested_states = self.rc.update(
+            rospy.Time.now().to_sec(), self.get_foot_positions())
+        update_feet = []
+        for foot_name in self.rc.feet:
+            foot = self.rc.feet[foot_name]
+            requested = requested_states.get(foot_name, None)
+            leg_state = legs.legs[foot_name]
+            # TODO break this out to avoid double processing
+            if requested == 'pause':
+                print("%s pause" % foot_name)
+                foot.stance_target = (0., 0.)
+                if foot.state in ('wait', 'stance'):
+                    print("%s stop" % foot_name)
+                    plans[foot_name] = leg.plans.make_stop_message(
+                        frame=kinematics.frames.BODY_FRAME)
+                    continue
+                elif foot.state == 'lift':
+                    print("%s lift up" % foot_name)
+                    plans[foot_name] = leg.plans.make_message(
+                        leg.plans.VELOCITY_MODE,
+                        kinematics.frames.BODY_FRAME,
+                        (0., 0., self.lift_velocity))
+                elif foot.state == 'lower':
+                    print("%s lower down" % foot_name)
+                    plans[foot_name] = leg.plans.make_message(
+                        leg.plans.VELOCITY_MODE,
+                        kinematics.frames.BODY_FRAME,
+                        (0., 0., -self.lower_velocity))
+            if leg_state['load'] > 50:
+                # leg is loaded
+                if foot.state == 'lower' and leg_state['z'] <= -1.1:
+                    dr = foot.restriction - foot.last_restriction
+                    if dr > 0:
+                        foot.set_state('stance')
+                    else:
+                        foot.set_state('wait')
+                    print("%s to %s" % (foot_name, foot.state))
+                    update_feet.append(foot_name)
+            else:
+                if foot.state == 'lift' and leg_state['z'] >= -0.9:
+                    print("%s to swing" % foot_name)
+                    foot.set_state('swing')
+                    update_feet.append(foot_name)
+            if requested == 'swing':
+                print("%s to lift" % foot_name)
+                foot.set_state('lift')
+                foot.last_lift_time = rospy.Time.now().to_sec()
+                # send lift
+                update_feet.append(foot_name)
+            if foot.state == 'swing':
+                x = leg_state['x']
+                y = leg_state['y']
+                tx, ty = foot.swing_target
+                d = ((x - tx) ** 2. + (y - ty) ** 2.) ** 0.5
+                # check if near target
+                if foot.swing_distance is None:
+                    foot.swing_distance = d
+                if d < 0.05 or (d - foot.swing_distance) > 0.05:
+                    # if so, lower
+                    print("%s to lower" % foot_name)
+                    foot.set_state('lower')
+                    update_feet.append(foot_name)
+                foot.swing_distance = min(d, foot.swing_distance)
+        plans.update(self.update_plans(list(set(update_feet))))
+        return new_mode, plans
+
+    def new_input(self, msg):
+        plans = self.update_targets(msg)
+        return plans
 
 
 mode_classes = {
