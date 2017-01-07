@@ -22,8 +22,8 @@ Positions [gazebo] in leg space
         looking down on leg pointed right + is up, - is down
         positive and negative
     z
-        looking at side with leg pointed right, + is down
-        0 is in line with hip joint, below this is +
+        looking at side with leg pointed right, - is down
+        0 is in line with hip joint, below this is -
 """
 
 import numpy
@@ -84,7 +84,7 @@ def inverse(x, y, z):
     hip_angle = numpy.arctan2(y, x)
 
     L = numpy.sqrt(z ** 2. + (l - hip_link) ** 2.)
-    a1 = numpy.arccos(z / L)
+    a1 = numpy.arccos(-z / L)
     a2 = numpy.arccos(
         (knee_link ** 2. - thigh_link ** 2. - L ** 2.) /
         (-2 * thigh_link * L))
@@ -128,7 +128,7 @@ def forward(hip_angle, thigh_angle, knee_angle):
     # rotate about hip angle
     y = x * numpy.sin(hip_angle)
     x *= numpy.cos(hip_angle)
-    return x, y, -z
+    return x, y, z
 
 
 leg_to_joints = inverse

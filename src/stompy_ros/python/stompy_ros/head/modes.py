@@ -37,6 +37,7 @@ button-mode
 from .. import info
 from .. import kinematics
 from .. import leg
+from . import legs
 
 
 # foot/leg modes
@@ -116,7 +117,7 @@ def get_mode_from_buttons(buttons):
 class Mode(object):
     mode = None
 
-    def __init__(self, msg):
+    def __init__(self, msg=None):
         pass
 
     def exit(self):
@@ -147,20 +148,25 @@ class Idle(Mode):
 class MoveLeg(Mode):
     mode = MOVE_LEG
 
-    def __init__(self, msg):
+    def __init__(self, msg=None):
         # TODO get move parameters from server
         self.scale_angles = 1 / 100.
         self.scale_legs = 1 / 200.
         self.scale_body = 1 / 200.
-        inds = get_pressed_button_indices(msg.buttons)
-        self.leg = None
-        for i in inds:
-            if i in leg_buttons:
-                self.leg = leg_buttons[i]
-        if self.leg is None:
-            raise ValueError(
-                "Invalid mode transition, unknown leg: %s" % (msg.buttons,))
-        self.frame = 'body'
+        if msg is None:
+            self.leg = 'fr'
+            self.frame = 'body'
+        else:
+            inds = get_pressed_button_indices(msg.buttons)
+            self.leg = None
+            for i in inds:
+                if i in leg_buttons:
+                    self.leg = leg_buttons[i]
+            if self.leg is None:
+                raise ValueError(
+                    "Invalid mode transition, unknown leg: %s" %
+                    (msg.buttons,))
+            self.frame = 'body'
 
     def new_input(self, msg):
         # check if changing leg or angles
@@ -215,21 +221,25 @@ class MoveLeg(Mode):
 class MoveBody(Mode):
     mode = MOVE_BODY
 
-    def __init__(self, msg):
+    def __init__(self, msg=None):
         # TODO get move parameters from server
         self.scale_translate = 1 / 200.
         self.scale_rotate = 1 / 100.
-        inds = get_pressed_button_indices(msg.buttons)
-        self.translate = None
-        for i in inds:
-            if i in body_buttons:
-                if body_buttons[i] == 'translate':
-                    self.translate = True
-                else:
-                    self.translate = False
-        if self.translate is None:
-            raise ValueError(
-                "Invalid mode transition, unknown body: %s" % (msg.buttons,))
+        if msg is None:
+            self.translate = True
+        else:
+            inds = get_pressed_button_indices(msg.buttons)
+            self.translate = None
+            for i in inds:
+                if i in body_buttons:
+                    if body_buttons[i] == 'translate':
+                        self.translate = True
+                    else:
+                        self.translate = False
+            if self.translate is None:
+                raise ValueError(
+                    "Invalid mode transition, unknown body: %s" %
+                    (msg.buttons,))
 
     def new_input(self, msg):
         inds = get_pressed_button_indices(msg.buttons)
@@ -262,7 +272,117 @@ class MoveBody(Mode):
 
 class PositionLegs(Mode):
     mode = POSITION_LEGS
-    # TODO lift legs, move to centers, place down
+
+    def __init__(self, msg=None):
+        # self.z_lift = -0.6
+        # self.z_lower = -1.5
+        # get all initial foot positions and loads
+        # TODO determine support triangle
+        # queue up legs to move
+        self.leg = None
+        self.state = None
+        self.target = None
+        self.last = None
+        self.speed = 0.002
+        self.moved_legs = []
+
+    def exit(self):
+        pass
+
+    def check_mode(self, msg):
+        new_mode = None
+        return new_mode
+
+    def update(self):
+        # TODO lift legs, move to centers, place down
+        if len(self.moved_legs) == len(legs.legs):
+            return IDLE, {}
+        new_mode = None
+        plans = {}
+        if self.leg is None:
+            # find new leg to move
+            loads = {}
+            for leg_name in legs.legs:
+                if leg_name in self.moved_legs:
+                    continue
+                loads[leg_name] = legs.legs[leg_name]['load']
+            # find least loaded
+            self.leg = min(loads, key=lambda l: loads[l])
+            leg_state = legs.legs[self.leg]
+            if leg_state['load'] > 20:
+                # lift
+                self.state = 'lift'
+                self.target = None
+                plans[self.leg] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE, kinematics.frames.BODY_FRAME,
+                    (0., 0., self.speed))
+            else:
+                # skip lift
+                self.state = 'center'
+                self.target = info.foot_centers[self.leg]
+                dx = self.target[0] - leg_state['x']
+                dy = self.target[1] - leg_state['y']
+                d = (dx * dx + dy * dy) ** 0.5
+                self.last = (leg_state['time'], d)
+                dx = dx / d * self.speed
+                dy = dy / d * self.speed
+                plans[self.leg] = leg.plans.make_message(
+                    leg.plans.VELOCITY_MODE, kinematics.frames.BODY_FRAME,
+                    (dx, dy, 0.0))
+        else:
+            # continue moving leg
+            leg_state = legs.legs[self.leg]
+            if self.state == 'lower':
+                print('lower', self.leg, leg_state['load'])
+                if leg_state['load'] > 40:
+                    plans[self.leg] = leg.plans.make_stop_message(
+                        frame=kinematics.frames.BODY_FRAME)
+                    self.moved_legs.append(self.leg)
+                    self.leg = None
+            elif self.state == 'center':
+                if self.last is None or leg_state['time'] != self.last[0]:
+                    dx = self.target[0] - leg_state['x']
+                    dy = self.target[1] - leg_state['y']
+                    d = (dx * dx + dy * dy) ** 0.5
+                    if self.last is not None:
+                        dd = self.last[1] - d
+                    else:
+                        dd = 0.
+                    print(
+                        'center', self.leg, self.target, leg_state,
+                        self.last, d, dd)
+                    self.last = (leg_state['time'], d)
+                    if d < 0.05 or dd < -0.001:
+                        self.state = 'lower'
+                        self.last = leg_state.copy()
+                        plans[self.leg] = leg.plans.make_message(
+                            leg.plans.VELOCITY_MODE,
+                            kinematics.frames.BODY_FRAME,
+                            (0., 0., -self.speed))
+            elif self.state == 'lift':
+                print('lower', self.leg, leg_state['load'])
+                if self.target is None:
+                    if leg_state['load'] < 10:
+                        # continue lifting for n seconds
+                        self.target = leg_state['time'] + 1
+                else:
+                    if leg_state['time'] > self.target:
+                        self.state = 'center'
+                        self.target = info.foot_centers[self.leg]
+                        dx = self.target[0] - leg_state['x']
+                        dy = self.target[1] - leg_state['y']
+                        d = (dx * dx + dy * dy) ** 0.5
+                        dx = dx / d * self.speed
+                        dy = dy / d * self.speed
+                        self.last = (leg_state['time'], d)
+                        plans[self.leg] = leg.plans.make_message(
+                            leg.plans.VELOCITY_MODE,
+                            kinematics.frames.BODY_FRAME,
+                            (dx, dy, 0.0))
+        return new_mode, plans
+
+    def new_input(self, msg):
+        pass
 
 
 class Restriction(Mode):
@@ -270,6 +390,7 @@ class Restriction(Mode):
 
 
 mode_classes = {
+    IDLE: Idle,
     MOVE_LEG: MoveLeg,
     MOVE_BODY: MoveBody,
     POSITION_LEGS: PositionLegs,

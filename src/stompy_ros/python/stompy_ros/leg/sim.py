@@ -39,9 +39,10 @@ class SimLeg(object):
         self._joint_names = [
             '%s_%s' % (self.name, jn) for jn in
             ('hip', 'thigh', 'knee')]
+        self._calf_name = '%s_calf' % self.name
         self.connect()
 
-    def send_foot(self, position, time):
+    def send_leg(self, position, load, time):
         pass
 
     def connect(self):
@@ -54,9 +55,12 @@ class SimLeg(object):
 
     def _new_joint_states(self, msg):
         ps = {}
+        load = None
         for i in xrange(len(msg.name)):
             if msg.name[i] in self._joint_names:
                 ps[msg.name[i].split('_')[1]] = msg.position[i]
+            elif msg.name[i] == self._calf_name:
+                load = msg.position[i]
         if len(ps) != 3:
             return
         if self._pos is None:
@@ -68,7 +72,10 @@ class SimLeg(object):
             [ps[j] for j in ('hip', 'thigh', 'knee')],
             kinematics.frames.JOINT_FRAME,
             kinematics.frames.BODY_FRAME)
-        self.send_foot(foot, msg.header.stamp)
+        # calculate load
+        # convert to newtons then to lbs
+        load = load * 105075.9 * 0.224808942443
+        self.send_leg(foot, load, msg.header.stamp)
 
     def halt(self, severity):
         # TODO handle severity

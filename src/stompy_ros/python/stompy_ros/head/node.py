@@ -14,16 +14,22 @@ Outputs:
 
 import rospy
 import sensor_msgs.msg
+import std_msgs.msg
 
 import stompy_msgs.msg
 from .. import info
+from . import legs
 from . import modes
 
 DEADMAN_BUTTON = 1
 
 
 class HeadNode(object):
+    _leg_msg = stompy_msgs.msg.LegState
+    _load_msg = std_msgs.msg.Float64
+
     def __init__(self):
+        # TODO publish mode
         self.mode = modes.Idle(None)
         self.connect()
 
@@ -36,8 +42,11 @@ class HeadNode(object):
             self.leg_plans[leg_name] = rospy.Publisher(
                 '/stompy/%s/plan' % leg_name,
                 stompy_msgs.msg.LegPlan, queue_size=queue_size)
-            # TODO sub to foot (or do this in the mode?)
-            pass
+            # sub to foot
+            rospy.Subscriber(
+                '/stompy/%s/leg' % leg_name,
+                self._leg_msg,
+                lambda msg, name=leg_name: legs.new_leg_message(name, msg))
 
     def new_joystick(self, msg):
         # TODO throttle
@@ -59,8 +68,8 @@ class HeadNode(object):
     def update(self):
         new_mode, plans = self.mode.update()
         if new_mode is not None:
-            # TODO check for new mode?
-            pass
+            self.mode.exit()
+            self.mode = modes.mode_classes[new_mode]()
         if plans is not None:
             self.send_plans(plans)
 

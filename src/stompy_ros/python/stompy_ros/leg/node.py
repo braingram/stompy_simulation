@@ -20,12 +20,11 @@ Main control loop:
 """
 
 import rospy
-import geometry_msgs.msg
 import sensor_msgs.msg
 import std_msgs.msg
 
 from heartbeat import ClientHeart
-from stompy_msgs.msg import LegPlan
+from stompy_msgs.msg import LegPlan, LegState
 
 #from . import controller
 from . import sim
@@ -34,7 +33,7 @@ from . import plans
 
 
 class LegNode(object):
-    _foot_msg = geometry_msgs.msg.PointStamped
+    _leg_msg = LegState
     _joint_sensor_msg = sensor_msgs.msg.JointState
     _joint_state_msg = sensor_msgs.msg.JointState
     _estop_msg = std_msgs.msg.Byte
@@ -55,9 +54,9 @@ class LegNode(object):
 
         # connect to publishers
         self.publishers = {
-            'foot': rospy.Publisher(
-                '/stompy/%s/foot' % self.name,
-                self._foot_msg,
+            'leg': rospy.Publisher(
+                '/stompy/%s/leg' % self.name,
+                self._leg_msg,
                 queue_size=queue_size),
             'joint_sensors': rospy.Publisher(
                 '/stompy/%s/sensors/joints' % self.name,
@@ -76,7 +75,7 @@ class LegNode(object):
         # TODO connect to controller
         #self.controller.send_joint_states = self.send_joint_states
         #self.controller.send_joint_sensors = self.send_joint_sensors
-        self.controller.send_foot = self.send_foot
+        self.controller.send_leg = self.send_leg
         #self.controller.send_estop = self.send_estop
 
     # --- inputs ---
@@ -123,14 +122,15 @@ class LegNode(object):
             msg.position.append(sensors[s])
         self.publishers['joint_sensors'].publish(msg)
 
-    def send_foot(self, position, time):
+    def send_leg(self, position, load, time):
         """publish foot position (x, y, z) in body frame"""
-        msg = self._foot_msg()
-        msg.point.x = position[0]
-        msg.point.y = position[1]
-        msg.point.z = position[2]
-        msg.header.stamp = time
-        self.publishers['foot'].publish(msg)
+        msg = self._leg_msg()
+        msg.position.x = position[0]
+        msg.position.y = position[1]
+        msg.position.z = position[2]
+        msg.time = time
+        msg.load = load
+        self.publishers['leg'].publish(msg)
 
     def send_estop(self, severity):
         """publish estop with severity"""

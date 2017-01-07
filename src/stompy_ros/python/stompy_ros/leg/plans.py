@@ -15,12 +15,13 @@ import stompy_msgs.msg
 STOP_MODE = 0
 VELOCITY_MODE = 1  # move along vector lx, ly, lz,
 ARC_MODE = 2  # rotate angular about point linear
-#TARGET_MODE = 3  # move to lx, ly, lz
+TARGET_MODE = 3  # move to lx, ly, lz
 
 mode_names = {
     'stop': STOP_MODE,
     'velocity': VELOCITY_MODE,
     'arc': ARC_MODE,
+    'target': TARGET_MODE,
 }
 modes = mode_names.values()
 
@@ -154,7 +155,12 @@ class PointGenerator(object):
             if use_plan_start is True:
                 t = self.plans[0].start_time
             else:  # use_plan_start is a time
-                t = self.plan_at_t(use_plan_start).start_time
+                plan = self.plan_at_t(use_plan_start)
+                if plan is None:
+                    t = None
+                else:
+                    t = plan.start_time
+                #t = self.plan_at_t(use_plan_start).start_time
                 # if no plan before use_plan_start, then use next
                 if t is None or use_plan_start - t < (dt * n):
                     for plan in self.plans:
@@ -243,26 +249,28 @@ def resolve_target(target, mode):
             target.linear.x, target.linear.y, target.linear.z,
             target.angular.x, target.angular.y, target.angular.z,
         ]
+    elif mode == TARGET_MODE:
+        raise NotImplementedError("Target mode not yet implemented")
     else:
         raise ValueError("Unknown mode: %s" % mode)
 
 
 def from_message(msg):
-    mode = msg.mode.data
-    frame = msg.frame.data
+    mode = msg.mode
+    frame = msg.frame
     target = resolve_target(msg.target, mode)
     start_time = (
-        None if msg.start_time.data.is_zero()
-        else msg.start_time.data.to_sec())
-    speed = None if msg.speed.data == 0. else msg.speed.data
+        None if msg.start_time.is_zero()
+        else msg.start_time.to_sec())
+    speed = None if msg.speed == 0. else msg.speed
     return Plan(
         mode, frame, target, start_time, speed)
 
 
 def make_message(mode, frame, target, start_time=0, speed=0):
     msg = stompy_msgs.msg.LegPlan()
-    msg.mode.data = lookup_mode(mode)
-    msg.frame.data = kinematics.frames.lookup_frame(frame)
+    msg.mode = lookup_mode(mode)
+    msg.frame = kinematics.frames.lookup_frame(frame)
     if mode == STOP_MODE:
         pass
     elif mode == VELOCITY_MODE:
@@ -278,8 +286,8 @@ def make_message(mode, frame, target, start_time=0, speed=0):
         msg.target.angular.z = target[5]
     if not isinstance(start_time, rospy.rostime.Time):
         start_time = rospy.Time(start_time)
-    msg.start_time.data = start_time
-    msg.speed.data = speed
+    msg.start_time = start_time
+    msg.speed = speed
     return msg
 
 
