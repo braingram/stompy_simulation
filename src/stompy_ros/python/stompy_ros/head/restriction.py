@@ -40,7 +40,7 @@ class RestrictionControl(object):
             foot.last_restriction = None
             foot.restriction = None
             self.feet[foot_name] = foot
-        self.n_up_max = 1  # set to 3 for tripod, 1 for crawl
+        self.n_up_max = 3  # set to 3 for tripod, 1 for crawl
         #self.restriction_threshold = 0.05
         self.restriction_threshold = 0.15
         self.max_restriction = 0.95
