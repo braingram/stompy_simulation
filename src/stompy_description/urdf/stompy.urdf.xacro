@@ -8,7 +8,7 @@
   <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
     <alwaysOn>true</alwaysOn>
     <bodyName>body_link</bodyName>
-    <topicName>imu</topicName>
+    <topicName>imu/data</topicName>
     <serviceName>imu_service</serviceName>
     <gaussianNoise>0.0</gaussianNoise>
     <updateRate>20.0</updateRate>
