@@ -115,12 +115,14 @@ class SimLeg(object):
         for jn in self._joint_names:
             msg.trajectory.joint_names.append(jn)
         st = ps[0].timestamp
+        print("building trajectory starting at: %s" % st)
         for p in ps:
             pt = trajectory_msgs.msg.JointTrajectoryPoint()
             pt.time_from_start = rospy.Duration(p.timestamp - st)
             pt.positions = p.position
             msg.trajectory.points.append(pt)
         msg.trajectory.header.stamp = rospy.Time(st)
+        print("publishing trajectory")
         self._trajectory_publisher.send_goal(msg)
 
     def update(self):
@@ -150,7 +152,7 @@ class SimLeg(object):
             ps = self._pgen.generate_points(100, self._points[-1])
         if len(ps):
             self._points.extend(ps)
-            #print("sending: %s" % (ps, ))
+            print("sending: len(ps) = %s" % (len(ps), ))
             self.send_points(ps)
         # drop old points
         for i in drop_inds[::-1]:
