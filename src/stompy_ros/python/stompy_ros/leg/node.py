@@ -26,7 +26,6 @@ import std_msgs.msg
 from heartbeat import ClientHeart
 from stompy_msgs.msg import LegPlan, LegState
 
-#from . import controller
 from . import sim
 from .. import kinematics
 from . import plans
