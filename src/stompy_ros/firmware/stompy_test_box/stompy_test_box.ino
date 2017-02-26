@@ -254,6 +254,7 @@ void draw_joystick() {
 void draw_deadman() {
   // draw deadman
   if (deadman) {
+    tft.fillCircle(D_DEADMAN_X, D_DEADMAN_Y, D_DEADMAN_R, ILI9341_BLACK);
     tft.drawCircle(D_DEADMAN_X, D_DEADMAN_Y, D_DEADMAN_R, ILI9341_GREEN); 
   } else {
     tft.fillCircle(D_DEADMAN_X, D_DEADMAN_Y, D_DEADMAN_R, ILI9341_PINK);
