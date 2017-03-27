@@ -32,7 +32,7 @@
 
 
 #define ANALOG_READ_RES 12
-#define ANALOG_WRITE_RES 12
+#define ANALOG_WRITE_FREQUENCY 2000
 
 
 // for a 320 high display, scale analog values by
@@ -104,7 +104,7 @@ void write_pwms() {
   if (joy[HIP_JS] > 0) {
     pwms[SENSOR_HIP] = joy[HIP_JS] * HIP_PWM_SCALE;
     analogWrite(HIP_PWM_0, pwms[SENSOR_HIP]);
-    analogWrite(HIP_PWM_1, 1);
+    analogWrite(HIP_PWM_1, 0);
   } else {
     pwms[SENSOR_HIP] = -joy[HIP_JS] * HIP_PWM_SCALE;
     analogWrite(HIP_PWM_0, 0);
@@ -113,7 +113,7 @@ void write_pwms() {
   if (joy[THIGH_JS] > 0) {
     pwms[SENSOR_THIGH] = joy[THIGH_JS] * THIGH_PWM_SCALE;
     analogWrite(THIGH_PWM_0, pwms[SENSOR_THIGH]);
-    analogWrite(THIGH_PWM_1, 1);
+    analogWrite(THIGH_PWM_1, 0);
   } else {
     pwms[SENSOR_THIGH] = -joy[THIGH_JS] * THIGH_PWM_SCALE;
     analogWrite(THIGH_PWM_0, 0);
@@ -122,7 +122,7 @@ void write_pwms() {
   if (joy[KNEE_JS] > 0) {
     pwms[SENSOR_KNEE] = joy[KNEE_JS] * KNEE_PWM_SCALE;
     analogWrite(KNEE_PWM_0, pwms[SENSOR_KNEE]);
-    analogWrite(KNEE_PWM_1, 1);
+    analogWrite(KNEE_PWM_1, 0);
   } else {
     pwms[SENSOR_KNEE] = -joy[KNEE_JS] * KNEE_PWM_SCALE;
     analogWrite(KNEE_PWM_0, 0);
@@ -278,15 +278,21 @@ void draw_plot() {
 
 
 void setup() {
+  /*
+  delay(1000);
   // HACK reset pin for display
-  pinMode(0, OUTPUT);
-  digitalWrite(0, HIGH);
-  delay(1);
+  pinMode(18, OUTPUT);
+  digitalWrite(18, HIGH);
+  delay(5);
+  digitalWrite(18, LOW);
+  delay(20);
+  digitalWrite(18, HIGH);
+  delay(150);
+  */
   tft.begin();
   tft.fillScreen(ILI9341_BLACK);
   tft.setTextColor(ILI9341_YELLOW);
   tft.setTextSize(2);
-
   pinMode(DEADMAN_PIN, INPUT_PULLUP);
   
   // disable motor outputs
@@ -296,8 +302,8 @@ void setup() {
   
   // setup same analog read res
   analogReadResolution(ANALOG_READ_RES);
-  analogWriteFrequency(3, ANALOG_WRITE_RES);
-  analogWriteFrequency(5, ANALOG_WRITE_RES);
+  analogWriteFrequency(3, ANALOG_WRITE_FREQUENCY);
+  analogWriteFrequency(5, ANALOG_WRITE_FREQUENCY);
 
   Serial.begin(115200);
 }
