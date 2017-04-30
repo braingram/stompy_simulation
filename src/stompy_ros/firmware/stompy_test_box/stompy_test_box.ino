@@ -12,8 +12,8 @@
 #define M2_EN_PIN 2
 
 #define HIP_SENSOR_PIN A6
-#define THIGH_SENSOR_PIN A3
-#define KNEE_SENSOR_PIN A1
+#define THIGH_SENSOR_PIN A1
+#define KNEE_SENSOR_PIN A3
 #define CALF_SENSOR_PIN A2
 
 #define HIP_PWM_0 9
@@ -25,7 +25,8 @@
 
 #define TFT_DC 21
 #define TFT_CS 255
-#define TFT_RST 255  // 255 = unused, connect to 3.3V
+//#define TFT_RST 255  // 255 = unused, connect to 3.3V
+#define TFT_RST 18
 #define TFT_MOSI 7
 #define TFT_SCLK 13
 #define TFT_MISO 12
