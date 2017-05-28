@@ -268,7 +268,7 @@ def from_message(msg):
         mode, frame, target, start_time, speed)
 
 
-def make_message(mode, frame, target, start_time=0, speed=0):
+def make_message(mode, frame, target, start_time=None, speed=0):
     msg = stompy_msgs.msg.LegPlan()
     msg.mode = lookup_mode(mode)
     msg.frame = kinematics.frames.lookup_frame(frame)
@@ -285,7 +285,11 @@ def make_message(mode, frame, target, start_time=0, speed=0):
         msg.target.angular.x = target[3]
         msg.target.angular.y = target[4]
         msg.target.angular.z = target[5]
-    if not isinstance(start_time, rospy.rostime.Time):
+    if start_time is None:
+        start_time = rospy.Duration(0.1)
+    if isinstance(start_time, rospy.rostime.Duration):
+        start_time = rospy.Time.now() + start_time
+    if not isinstance(start_time, rospy.rostime.genpy.Time):
         start_time = rospy.Time(start_time)
     msg.start_time = start_time
     msg.speed = speed
