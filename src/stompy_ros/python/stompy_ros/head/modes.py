@@ -37,6 +37,7 @@ button-mode
 import rospy
 
 from .. import info
+from .. import joystick
 from .. import kinematics
 from .. import leg
 from . import legs
@@ -153,6 +154,9 @@ class MoveLeg(Mode):
 
     def __init__(self, msg=None):
         # TODO get move parameters from server
+        self.jthrottle = joystick.Throttler()
+        if msg is not None:
+            self.jthrottle.update(msg)
         self.scale_angles = 1 / 100.
         self.scale_legs = 1 / 200.
         self.scale_body = 1 / 200.
@@ -172,6 +176,7 @@ class MoveLeg(Mode):
             self.frame = 'body'
 
     def new_input(self, msg):
+        jnew = self.jthrottle.update(msg)
         # check if changing leg or angles
         inds = get_pressed_button_indices(msg.buttons)
         new_leg = None
@@ -216,8 +221,9 @@ class MoveLeg(Mode):
                 msg.axes[0] * self.scale_angles,
                 msg.axes[1] * self.scale_angles,
                 msg.axes[2] * self.scale_angles]
-        plans[self.leg] = leg.plans.make_message(
-            leg.plans.VELOCITY_MODE, frame, target)
+        if jnew:
+            plans[self.leg] = leg.plans.make_message(
+                leg.plans.VELOCITY_MODE, frame, target)
         return plans
 
 
@@ -225,6 +231,9 @@ class MoveBody(Mode):
     mode = MOVE_BODY
 
     def __init__(self, msg=None):
+        self.jthrottle = joystick.Throttler()
+        if msg is not None:
+            self.jthrottle.update(msg)
         # TODO get move parameters from server
         self.scale_translate = 1 / 500.
         self.scale_rotate = 1 / 500.
@@ -245,6 +254,7 @@ class MoveBody(Mode):
                     (msg.buttons,))
 
     def new_input(self, msg):
+        jnew = self.jthrottle.update(msg)
         inds = get_pressed_button_indices(msg.buttons)
         for i in inds:
             if i in body_buttons:
@@ -266,10 +276,11 @@ class MoveBody(Mode):
                 msg.axes[1] * self.scale_rotate,
                 msg.axes[2] * self.scale_rotate]
         plans = {}
-        for leg_name in info.legs:
-            plans[leg_name] = leg.plans.make_message(
-                plan_mode, kinematics.frames.BODY_FRAME,
-                target)
+        if jnew:
+            for leg_name in info.legs:
+                plans[leg_name] = leg.plans.make_message(
+                    plan_mode, kinematics.frames.BODY_FRAME,
+                    target)
         return plans
 
 
@@ -392,6 +403,9 @@ class Restriction(Mode):
     mode = RESTRICTION
 
     def __init__(self, msg=None):
+        self.jthrottle = joystick.Throttler()
+        if msg is not None:
+            self.jthrottle.update(msg)
         self.rc = restriction.RestrictionControl()
         self.step_size = 0.5
         self.half_step_size = self.step_size / 2.
@@ -552,7 +566,11 @@ class Restriction(Mode):
         return new_mode, plans
 
     def new_input(self, msg):
-        plans = self.update_targets(msg)
+        jnew = self.jthrottle.update(msg)
+        if jnew:
+            plans = self.update_targets(msg)
+        else:
+            plans = {}
         return plans
 
 

@@ -44,6 +44,7 @@
     </visual>
   </link>
 
+  <!--
   <gazebo reference="camera_link">
     <material>Gazebo/Red</material>
   </gazebo>
@@ -84,7 +85,6 @@
     <sensor type="camera" name="camera1">
       <update_rate>30.0</update_rate>
       <camera name="head">
-        <!--<horizontal_fov>1.3962634</horizontal_fov>-->
         <horizontal_fov>2.5</horizontal_fov>
         <image>
           <width>800</width>
@@ -97,9 +97,6 @@
         </clip>
         <noise>
           <type>gaussian</type>
-          <!-- Noise is sampled independently per pixel on each frame.
-               That pixel's noise value is added to each of its color
-               channels, which at that point lie in the range [0,1]. -->
           <mean>0.0</mean>
           <stddev>0.007</stddev>
         </noise>
@@ -120,7 +117,7 @@
       </plugin>
     </sensor>
   </gazebo>
-
+  -->
   <xacro:leg name="fl" rpy="0 0 0.9599" xyz="2.2352  0.5842   -0.1000"/>
   <xacro:leg name="fr" rpy="0 0 -0.9599" xyz="2.2352 -0.5842   -0.1000"/>
   <xacro:leg name="ml" rpy="0 0 1.5706" xyz="0.0  0.6858   -0.1000"/>

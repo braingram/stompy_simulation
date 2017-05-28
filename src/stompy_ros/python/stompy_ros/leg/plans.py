@@ -213,7 +213,8 @@ class PointGenerator(object):
                 if not (
                         plan.mode == STOP_MODE or
                         transforms.is_stop_3d(p.transform)):
-                    raise Exception
+                    raise Exception(
+                        "%s" % (p.frame, plan.frame, plan.mode, p.transform))
             if pldt > self.blend_time:
                 transform = plan.transform
             else:

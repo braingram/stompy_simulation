@@ -49,13 +49,13 @@ class HeadNode(object):
                 lambda msg, name=leg_name: legs.new_leg_message(name, msg))
 
     def new_joystick(self, msg):
-        # TODO throttle
         # TODO check deadman
         new_mode = self.mode.check_mode(msg)
         if new_mode is not None:  # change mode
             self.mode.exit()
             print("New mode: %s" % new_mode)
             self.mode = modes.mode_classes[new_mode](msg)
+        # TODO throttle
         plans = self.mode.new_input(msg)
         if plans is not None:
             self.send_plans(plans)
