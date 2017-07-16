@@ -12,8 +12,8 @@
 #define M2_EN_PIN 2
 
 #define HIP_SENSOR_PIN A6
-#define THIGH_SENSOR_PIN A1
-#define KNEE_SENSOR_PIN A3
+#define THIGH_SENSOR_PIN A3
+#define KNEE_SENSOR_PIN A1
 #define CALF_SENSOR_PIN A2
 
 #define HIP_PWM_0 9
@@ -33,6 +33,7 @@
 
 
 #define ANALOG_READ_RES 12
+#define ANALOG_WRITE_RES 12
 #define ANALOG_WRITE_FREQUENCY 2000
 
 
@@ -231,8 +232,8 @@ void draw_values() {
 void draw_joystick() {
   tft.fillRect(D_JOY_X-D_JOY_R-D_JOY_ZR, D_JOY_Y-D_JOY_R-D_JOY_ZR, (D_JOY_R + D_JOY_ZR) * 2, (D_JOY_R + D_JOY_ZR) * 2, ILI9341_BLACK);
   // compute jx, jy, jr
-  unsigned int jx = D_JOY_X + (joy[JS_X] * D_JOY_R);
-  unsigned int jy = D_JOY_Y + (joy[JS_Y] * D_JOY_R);
+  unsigned int jx = D_JOY_X - (joy[JS_X] * D_JOY_R);
+  unsigned int jy = D_JOY_Y - (joy[JS_Y] * D_JOY_R);
   unsigned int jr = (joy[JS_Z] + 1.0) * 0.5 * D_JOY_R;
   /*
   unsigned int jx = D_JOY_X + (int)((joy_x / 2047.5 - 1.0) * D_JOY_R);
@@ -303,6 +304,7 @@ void setup() {
   
   // setup same analog read res
   analogReadResolution(ANALOG_READ_RES);
+  analogWriteResolution(ANALOG_WRITE_RES);
   analogWriteFrequency(3, ANALOG_WRITE_FREQUENCY);
   analogWriteFrequency(5, ANALOG_WRITE_FREQUENCY);
 
